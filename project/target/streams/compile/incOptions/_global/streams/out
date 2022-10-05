@@ -1,0 +1,15 @@
+[debug] Created transactional ClassFileManager with tempDir = /home/anzor.gurchumelia/Desktop/onair-game-simulation/project/target/scala-2.12/sbt-1.0/classes.bak
+[debug] About to delete class files:
+[debug] We backup class files:
+[debug] Registering generated classes:
+[debug] 	Dependencies$Akka$.class
+[debug] 	Dependencies.class
+[debug] 	Dependencies$Common$.class
+[debug] 	Dependencies$ProjectOps.class
+[debug] 	Dependencies$Cats$.class
+[debug] 	Dependencies$SQL$.class
+[debug] 	Dependencies$.class
+[debug] 	Dependencies$Http4s$.class
+[debug] 	Dependencies$Specs$.class
+[debug] 	Dependencies$Circe$.class
+[debug] Removing the temporary directory used for backing up class files: /home/anzor.gurchumelia/Desktop/onair-game-simulation/project/target/scala-2.12/sbt-1.0/classes.bak
