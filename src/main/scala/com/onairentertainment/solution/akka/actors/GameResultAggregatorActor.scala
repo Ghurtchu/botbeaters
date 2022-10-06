@@ -7,9 +7,10 @@ import com.onairentertainment.solution.akka.actors.GameResultAggregatorActor.{Ag
 
 import scala.collection.mutable.ArrayBuffer
 
-class GameResultAggregatorActor(gameResultAggregator: GameResultAggregator) extends Actor {
+class GameResultAggregatorActor(gameResultAggregator: GameResultAggregator) extends Actor with ActorLogging {
   override def receive: Receive = {
     case AggregateResults(players) =>
+      log.info("Aggregating results for players")
       val gameResult = gameResultAggregator.aggregate(players.toSeq)
       sender ! AggregatorReply(gameResult)
   }

@@ -7,13 +7,11 @@ import com.onairentertainment.solution.akka.actors.PlayerActor.{Play, PlayerRepl
 
 class PlayerActor (randomNumberGenerator: RandomNumberGenerator) extends Actor {
 
-  var randomNumber: Option[RandomNumber] = None
-
   override def receive: Receive = {
     case Play(player) =>
-      randomNumber = Some(randomNumberGenerator.generate)
-      val newPlayer = player.copy(randomNumber = this.randomNumber)
-      sender ! PlayerReply(newPlayer)
+      val randNumber = Some(randomNumberGenerator.generate)
+      val playerWithRandNumber = player.copy(randomNumber = randNumber)
+      sender ! PlayerReply(playerWithRandNumber)
   }
 }
 

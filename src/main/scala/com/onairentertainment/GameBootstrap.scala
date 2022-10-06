@@ -15,16 +15,16 @@ object GameBootstrap {
     case object AkkaConsole    extends Solution
     case object ScalaConsole   extends Solution
 
-    def apply(solution: String): Option[Solution] = {
-      if (solution == "akka-http") Some(AkkaWebSockets)
-      else if (solution == "akka-console") Some(AkkaConsole)
-      else Some(ScalaConsole)
+    def apply(solution: String): Solution = {
+      if (solution == "akka-http") AkkaWebSockets
+      else if (solution == "akka-console") AkkaConsole
+      else ScalaConsole
     }
   }
 
   def main(args: Array[String]): Unit = {
     for (arg <- Try(args(0))) {
-      Solution(arg).fold(ScalaConsoleApp.main(args)) { // run ScalaConsoleApp as a default choice
+      Solution(arg) match { // run ScalaConsoleApp as a default choice
         case Solution.AkkaConsole    => AkkaConsoleApp.main(args)
         case Solution.ScalaConsole   => ScalaConsoleApp.main(args)
         case Solution.AkkaWebSockets => // not yet implemented

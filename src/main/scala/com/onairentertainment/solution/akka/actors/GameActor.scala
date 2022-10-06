@@ -17,6 +17,7 @@ class GameActor extends Actor with ActorLogging {
   override def receive: Receive = {
 
     case InitializePlayers(numberOfPlayers) => {
+      log.info(s"Initializing the game for $numberOfPlayers players")
       nPlayers = numberOfPlayers
       val players = for (_ <- 0 to numberOfPlayers) yield Player()
       val playerActorRefs = for (player <- players) yield context.actorOf(PlayerActor.props(new BoundedRandomNumberGenerator(from = 0, to = 10_000)), s"player${player.id}")
@@ -38,9 +39,7 @@ class GameActor extends Actor with ActorLogging {
       }
 
 
-    case AggregatorReply(results) =>
-      log.info(results.mkString("\n"))
-      sender ! results
+    case AggregatorReply(results) => log.info(results.mkString(start = "\n", sep = "\n", end = ""))
 
   }
 }

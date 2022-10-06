@@ -21,16 +21,10 @@ class OnAirResultCalculator extends GameResultCalculator {
       .toMap
       .filter(_._2 != 0)
       .map(applyFormula)
-      .keys
       .sum
   }
 
-  private def applyFormula(pair: (Int, Int)): (Int, Int) = {
-    val times = pair._2
-    val mappedNumber = Math.pow(10, times - 1).toInt
-
-    (mappedNumber, times)
-  }
+  private def applyFormula(pair: (Int, Int)): Int = Math.pow(10, pair._2 - 1).toInt
 
 }
 
