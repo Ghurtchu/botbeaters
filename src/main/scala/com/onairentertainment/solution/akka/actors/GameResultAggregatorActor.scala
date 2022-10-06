@@ -11,14 +11,14 @@ class GameResultAggregatorActor(gameResultAggregator: GameResultAggregator) exte
   override def receive: Receive = {
     case AggregateResults(players) =>
       log.info("Aggregating results for players")
-      val gameResult = gameResultAggregator.aggregate(players.toSeq)
+      val gameResult = gameResultAggregator.aggregate(players)
       sender ! AggregatorReply(gameResult)
   }
 }
 
 object GameResultAggregatorActor {
 
-  final case class AggregateResults(players: ArrayBuffer[Player])
+  final case class AggregateResults(players: List[Player])
   final case class AggregatorReply(results: Seq[AggregatedResult])
 
   def props(gameResultAggregator: GameResultAggregator): Props =

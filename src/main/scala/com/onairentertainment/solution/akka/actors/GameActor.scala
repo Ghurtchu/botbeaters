@@ -7,42 +7,37 @@ import GameResultAggregatorActor._
 import com.onairentertainment.core.service.implementation.{BoundedRandomNumberGenerator, OnAirResultAggregator, OnAirResultCalculator}
 import com.onairentertainment.solution.akka.actors.PlayerActor.{Play, PlayerReply}
 
-import scala.collection.mutable
-
 class GameActor extends Actor with ActorLogging {
 
-  var nPlayers: Int = 0 // initialize as 0
-  val playersWithRandomNumbers: mutable.ArrayBuffer[Player] = mutable.ArrayBuffer.empty
+  override def receive: Receive = withPlayers(0, List.empty)
 
-  override def receive: Receive = {
+  private final def withPlayers(numberOfPlayers: Int, playersWithRandomNumbers: List[Player]): Receive = {
 
-    case InitializePlayers(numberOfPlayers) => {
-      log.info(s"Initializing the game for $numberOfPlayers players")
-      nPlayers = numberOfPlayers
-      val players = for (_ <- 0 to numberOfPlayers) yield Player()
+    case InitializePlayers(nOfPlayers) =>
+      log.info(s"Initializing the game for $nOfPlayers players")
+      val players = for (_ <- 0 to nOfPlayers) yield Player()
       val playerActorRefs = for (player <- players) yield context.actorOf(PlayerActor.props(new BoundedRandomNumberGenerator(from = 0, to = 10_000)), s"player${player.id}")
+      context.become(withPlayers(nOfPlayers, playersWithRandomNumbers))
       playerActorRefs.zip(players).foreach { pair =>
         val playerActorRef = pair._1
         val player = pair._2
 
         playerActorRef ! Play(player)
       }
-    }
 
     case PlayerReply(player) =>
-      if (nPlayers == 0) {
+      if (isLastPlayer(numberOfPlayers)) {
         val gameResultAggregatorActorRef = context.actorOf(GameResultAggregatorActor.props(new OnAirResultAggregator(new OnAirResultCalculator())))
         gameResultAggregatorActorRef ! AggregateResults(playersWithRandomNumbers)
-      } else {
-        playersWithRandomNumbers.addOne(player)
-        nPlayers -= 1
-      }
-
+      } else context.become(withPlayers(numberOfPlayers - 1, player :: playersWithRandomNumbers))
 
     case AggregatorReply(results) => log.info(results.mkString(start = "\n", sep = "\n", end = ""))
 
   }
+
+  private final def isLastPlayer(numberOfPlayers: Int): Boolean = numberOfPlayers == 0
 }
+
 
 object GameActor {
   final case class InitializePlayers(numberOfPlayers: Int)

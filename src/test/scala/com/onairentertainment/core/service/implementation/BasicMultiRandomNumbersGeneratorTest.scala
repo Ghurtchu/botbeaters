@@ -12,14 +12,14 @@ class BasicMultiRandomNumbersGeneratorTest extends AnyWordSpecLike with Matchers
       val service = new BasicMultiRandomNumbersGenerator(new BoundedRandomNumberGenerator(from = 10, to = 100))
       val players = for (_ <- 1 to 100) yield Player()
       val updatedPlayers = service.generate(players)
-      updatedPlayers.forall(_.randomNumber.isDefined)
+      assert(updatedPlayers.forall(_.randomNumber.isDefined))
     }
 
     "generate correct random numbers for all players which are passed in" in {
       val service = new BasicMultiRandomNumbersGenerator(new BoundedRandomNumberGenerator(from = 10, to = 100))
       val players = for (_ <- 1 to 100) yield Player()
       val updatedPlayers = service.generate(players)
-      updatedPlayers.forall(p => p.randomNumber.isDefined && p.randomNumber.get.value >= 10 && p.randomNumber.get.value < 100)
+      assert(updatedPlayers.forall(p => p.randomNumber.isDefined && p.randomNumber.get.value >= 10 && p.randomNumber.get.value < 100))
     }
 
   }
