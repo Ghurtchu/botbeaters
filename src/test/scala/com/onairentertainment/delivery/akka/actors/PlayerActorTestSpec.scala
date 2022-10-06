@@ -24,14 +24,14 @@ class PlayerActorTestSpec extends TestKit(ActorSystem("PlayerActorTestSpec"))
     "accept Play message and return PlayerReply to the sender" in {
       val playerActor = sys.actorOf(PlayerActor.props(new BoundedRandomNumberGenerator(from = 0, to = 10_000)))
       val player = Player()
-      playerActor ! Play(player, testActor)
+      playerActor ! Play(player)
       expectMsgType[PlayerReply]
     }
 
     "accept Play message and return PlayerReply with the Player's updated random number" in {
       val playerActor = sys.actorOf(PlayerActor.props(new BoundedRandomNumberGenerator(from = 0, to = 10_000)))
       val player = Player()
-      playerActor ! Play(player, testActor)
+      playerActor ! Play(player)
       val reply = expectMsgType[PlayerReply]
       assert(reply.player.randomNumber.isDefined)
     }

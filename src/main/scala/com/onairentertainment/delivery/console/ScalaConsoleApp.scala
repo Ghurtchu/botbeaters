@@ -16,7 +16,7 @@ object ScalaConsoleApp extends scala.App {
   println("Welcome to the game!")
 
   during(GameState.On) {
-    val initialPlayers: Seq[Player] = for (_ <- 0 to 10) yield Player()
+    val initialPlayers: Seq[Player] = for (_ <- 0 to 5) yield Player()
     val multiRandomNumbersGenerator = new BasicMultiRandomNumbersGenerator(new BoundedRandomNumberGenerator(from = 0, to = 10_000))
     val playersWithNumbers: Seq[Player] = multiRandomNumbersGenerator.generate(initialPlayers)
     val gameAggregator: GameResultAggregator = new OnAirResultAggregator(new OnAirResultCalculator())

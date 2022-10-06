@@ -2,7 +2,7 @@ package com.onairentertainment.delivery.akka.actors
 
 import akka.actor.{ActorSystem, Props}
 import akka.testkit.{ImplicitSender, TestKit}
-import com.onairentertainment.core.model.AggregatedResult
+import com.onairentertainment.core.model.{AggregatedResult, Player, RandomNumber}
 import com.onairentertainment.delivery.akka.actors.GameActor._
 import com.onairentertainment.delivery.akka.actors.GameResultAggregatorActor.AggregatorReply
 import org.scalatest.BeforeAndAfterAll
@@ -30,8 +30,9 @@ class GameActorTestSpec extends TestKit(ActorSystem("GameResultAggregatorActorTe
       gameActor ! AggregatorReply(Seq(AggregatedResult(1, "player1", 12345, 5), AggregatedResult(2, "player2", 11111, 10000)))
       val msg = expectMsgType[Aggregated]
       val expected = List(AggregatedResult(1, "player1", 12345, 5), AggregatedResult(2, "player2", 11111, 10000))
-      assertResult(expected)(msg.result)
+      assertResult(expected)(msg.results)
     }
+
   }
 
 }

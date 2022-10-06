@@ -8,17 +8,17 @@ import com.onairentertainment.delivery.akka.actors.PlayerActor.{Play, PlayerRepl
 class PlayerActor (randomNumberGenerator: RandomNumberGenerator) extends Actor {
 
   override def receive: Receive = {
-    case Play(player, originalSender) =>
+    case Play(player) =>
       val randNumber = Some(randomNumberGenerator.generate)
       val playerWithRandNumber = player.copy(randomNumber = randNumber)
-      sender ! PlayerReply(playerWithRandNumber, originalSender)
+      sender ! PlayerReply(playerWithRandNumber)
   }
 }
 
 object PlayerActor {
 
-  final case class Play(player: Player, originalSender: ActorRef)
-  final case class PlayerReply(player: Player, originalSender: ActorRef)
+  final case class Play(player: Player)
+  final case class PlayerReply(player: Player)
 
   def props(randomNumberGenerator: RandomNumberGenerator): Props =
     Props(new PlayerActor(randomNumberGenerator))
