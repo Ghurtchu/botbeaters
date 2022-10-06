@@ -1,7 +1,7 @@
 package com.onairentertainment
 
-import com.onairentertainment.solution.akka.AkkaConsoleApp
-import com.onairentertainment.solution.console.ScalaConsoleApp
+import com.onairentertainment.delivery.akka.AkkaConsoleApp
+import com.onairentertainment.delivery.console.ScalaConsoleApp
 
 import scala.util.Try
 
