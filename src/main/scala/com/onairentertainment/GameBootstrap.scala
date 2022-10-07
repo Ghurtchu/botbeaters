@@ -1,6 +1,6 @@
 package com.onairentertainment
 
-import com.onairentertainment.delivery.akka.AkkaConsoleApp
+import com.onairentertainment.delivery.akka.{AkkaConsoleApp, AkkaHttpApp}
 import com.onairentertainment.delivery.console.ScalaConsoleApp
 
 import scala.util.Try
@@ -27,7 +27,7 @@ object GameBootstrap {
       Solution(arg) match { // run ScalaConsoleApp as a default choice
         case Solution.AkkaConsole    => AkkaConsoleApp.main(args)
         case Solution.ScalaConsole   => ScalaConsoleApp.main(args)
-        case Solution.AkkaWebSockets => // not yet implemented
+        case Solution.AkkaWebSockets => AkkaHttpApp.main(args)
       }
     }
   }
