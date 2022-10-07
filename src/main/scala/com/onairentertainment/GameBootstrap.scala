@@ -16,7 +16,7 @@ object GameBootstrap {
     case object ScalaConsole   extends Solution
 
     def apply(solution: String): Solution = {
-      if (solution == "akka-http") AkkaWebSockets
+      if (solution == "akka-websockets") AkkaWebSockets
       else if (solution == "akka-console") AkkaConsole
       else ScalaConsole
     }
