@@ -6,7 +6,7 @@ import com.onairentertainment.core.service.protocol.{GameResultAggregator, GameR
 
 final class OnAirResultAggregator(gameResultCalculator: GameResultCalculator) extends GameResultAggregator {
 
-  override def aggregate(players: Seq[Player]): Seq[AggregatedResult] = {
+  override def aggregate(players: List[Player]): List[AggregatedResult] = {
     val sortedAndFilteredPlayers = (for {
       intermediateResults <- Option(players.map(toIntermediateResult))
       bot                 <- intermediateResults.find(_.player == "bot")
@@ -18,7 +18,7 @@ final class OnAirResultAggregator(gameResultCalculator: GameResultCalculator) ex
           .zipWithIndex
           .map(toAggregatedResult)
       }
-    } yield sortedPlayers).fold(Seq.empty[AggregatedResult])(identity)
+    } yield sortedPlayers).fold(List.empty[AggregatedResult])(identity)
 
     sortedAndFilteredPlayers
   }

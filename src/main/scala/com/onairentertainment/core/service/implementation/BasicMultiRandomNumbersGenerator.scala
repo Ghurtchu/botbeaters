@@ -5,6 +5,6 @@ import com.onairentertainment.core.service.protocol.{MultiRandomNumbersGenerator
 
 final class BasicMultiRandomNumbersGenerator(private val randomNumberGenerator: RandomNumberGenerator) extends MultiRandomNumbersGenerator {
 
-  override def generate(players: Seq[Player]): Seq[Player] =
+  override def generate(players: List[Player]): List[Player] =
     players.map(_.copy(randomNumber = Some(randomNumberGenerator.generate)))
 }

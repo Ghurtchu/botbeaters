@@ -50,5 +50,5 @@ class GameActor extends Actor with ActorLogging {
 object GameActor {
   final case class InitializePlayers(numberOfPlayers: Int)
   final case class Initialized(playerActorRefs: List[ActorRef])
-  final case class Aggregated(results: Seq[AggregatedResult])
+  final case class Aggregated(results: List[AggregatedResult])
 }

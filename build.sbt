@@ -10,5 +10,6 @@ libraryDependencies ++= Akka.typed ++ Circe.deps ++ Seq(
   Akka.akkaTestkit,
   Akka.streamTestkit,
   Akka.akkaHttpTestkit,
-  Specs.scalaTest % Test
+  Specs.scalaTest % Test,
+  "com.typesafe.akka" %% "akka-http-spray-json" % Akka.akkaHttpVersion,
 )

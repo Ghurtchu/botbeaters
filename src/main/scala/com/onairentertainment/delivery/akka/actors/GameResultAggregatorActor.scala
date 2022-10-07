@@ -17,7 +17,7 @@ class GameResultAggregatorActor(gameResultAggregator: GameResultAggregator) exte
 object GameResultAggregatorActor {
 
   final case class AggregateResults(players: List[Player])
-  final case class AggregatorReply(results: Seq[AggregatedResult])
+  final case class AggregatorReply(results: List[AggregatedResult])
 
   def props(gameResultAggregator: GameResultAggregator): Props =
     Props(new GameResultAggregatorActor(gameResultAggregator))
