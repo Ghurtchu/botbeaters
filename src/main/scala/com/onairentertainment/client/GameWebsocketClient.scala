@@ -18,6 +18,8 @@ object GameWebsocketClient extends scala.App
   with AggregatedResultProtocol
   with SprayJsonSupport {
 
+  println("initializing WebSocketClient")
+
   implicit val system = ActorSystem("GameWebsocketClientSystem")
 
   val playPayloadSource: Source[Message, NotUsed] =

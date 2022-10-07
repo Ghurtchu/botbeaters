@@ -66,5 +66,6 @@ object AkkaHttpApp extends scala.App
       }
 
   Http().newServerAt("localhost", 8080).bind(routes)
+  println("HTTP Server listening on port 8080")
 
 }

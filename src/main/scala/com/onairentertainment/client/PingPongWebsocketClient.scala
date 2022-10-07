@@ -14,6 +14,8 @@ import scala.concurrent.duration.DurationInt
 
 object PingPongWebsocketClient extends scala.App with PingJsonProtocol {
 
+  println("initializing WebSocketClient")
+
   implicit val system = ActorSystem("PingWebsocketClientSystem")
 
   val playPayloadSource: Source[Message, NotUsed] =

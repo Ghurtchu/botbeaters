@@ -12,10 +12,12 @@ class WebsocketGameActor extends Actor with ActorLogging {
   override def receive: Receive = {
 
     case PlayGame(playerCount) =>
+      log.info(s"Initializing the game for $playerCount players")
       val initialPlayers: List[Player] = Player(id = "bot") :: (for (_ <- 1 to playerCount) yield Player()).toList
       val multiRandomNumbersGenerator = new BasicMultiRandomNumbersGenerator(new BoundedRandomNumberGenerator(from = 0, to = 10_000))
       val playersWithNumbers: List[Player] = multiRandomNumbersGenerator.generate(initialPlayers)
       val gameResult: List[AggregatedResult] = new OnAirResultAggregator(new OnAirResultCalculator()).aggregate(playersWithNumbers)
+      log.info("Sending back the result")
 
       sender ! Aggregated(gameResult)
 
