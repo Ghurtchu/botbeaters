@@ -17,8 +17,11 @@ class GameActor extends Actor with ActorLogging {
 
     case InitializePlayers(nOfPlayers) =>
       log.info(s"Initializing the game for $nOfPlayers players")
-      val players = for (_ <- 1 to nOfPlayers) yield Player()
-      val playerActorRefs = for (player <- players) yield context.actorOf(PlayerActor.props(new BoundedRandomNumberGenerator(from = 0, to = 10_000)), s"player${player.id}")
+      val botPlayerName = "bot"
+      val botPlayer = Player(id = botPlayerName)
+      val botPlayerActorRef = context.actorOf(PlayerActor.props(new BoundedRandomNumberGenerator(from = 0, to = 999999)), botPlayerName)
+      val players = botPlayer :: (for (_ <- 1 to nOfPlayers) yield Player()).toList
+      val playerActorRefs = botPlayerActorRef :: (for (player <- players) yield context.actorOf(PlayerActor.props(new BoundedRandomNumberGenerator(from = 0, to = 999999)), s"player${player.id}")).toList
       originalSender ! Initialized(playerActorRefs)
       playerActorRefs.zip(players).foreach { pair =>
         val playerActorRef = pair._1
@@ -26,7 +29,7 @@ class GameActor extends Actor with ActorLogging {
 
         playerActorRef ! Play(player)
       }
-      context.become(withState(nOfPlayers, playersWithRandomNumbers))
+      context.become(withState(nOfPlayers + 1, playersWithRandomNumbers))
 
     case PlayerReply(player) =>
       if (isLastPlayer(numberOfPlayers)) {
@@ -46,6 +49,6 @@ class GameActor extends Actor with ActorLogging {
 
 object GameActor {
   final case class InitializePlayers(numberOfPlayers: Int)
-  final case class Initialized(playerActorRefs: IndexedSeq[ActorRef])
+  final case class Initialized(playerActorRefs: List[ActorRef])
   final case class Aggregated(results: Seq[AggregatedResult])
 }

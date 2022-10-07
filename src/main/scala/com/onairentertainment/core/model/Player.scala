@@ -10,4 +10,6 @@ object Player {
 
   def apply(): Player =
     new Player(s"player_${RANDOM.between(0, Int.MaxValue)}", None)
+
+  def apply(id: String): Player = new Player(id, None)
 }
