@@ -1,0 +1,12 @@
+#Successful Tests
+#Fri Oct 07 22:53:27 GET 2022
+com.onairentertainment.core.service.implementation.BasicMultiRandomNumbersGeneratorTest=1665168803863
+com.onairentertainment.delivery.akka.actors.PlayerActorTestSpec=1665168807201
+com.onairentertainment.core.service.implementation.OnAirResultAggregatorTest=1665168803856
+com.onairentertainment.core.service.implementation.OnAirResultCalculatorTest=1665168803813
+com.onairentertainment.GameLogicSpec=1665168803770
+com.onairentertainment.delivery.akka.actors.WebsocketGameActorTest=1665168804231
+com.onairentertainment.delivery.akka.actors.GameActorTestSpec=1665168804231
+com.onairentertainment.WebSocketSpec=1665168804161
+com.onairentertainment.delivery.akka.actors.GameResultAggregatorActorTestSpec=1665168807212
+com.onairentertainment.core.service.implementation.BoundedRandomNumberGeneratorTest=1665168803809

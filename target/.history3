@@ -1,1 +1,10 @@
 1664987647039:;set _root_.scala.collection.Seq(historyPath := None,shellPrompt := { _ => "" },SettingKey[_root_.scala.Option[_root_.sbt.File]]("sbtStructureOutputFile") in _root_.sbt.Global := _root_.scala.Some(_root_.sbt.file("/tmp/sbt-structure.xml")),SettingKey[_root_.java.lang.String]("sbtStructureOptions") in _root_.sbt.Global := "download, resolveClassifiers");apply -cp "/home/anzor.gurchumelia/.local/share/JetBrains/IdeaIC2022.2/Scala/repo/org/jetbrains/scala/sbt-structure-extractor_2.12_1.0/2021.3.0/sbt-structure-extractor-2021.3.0.jar" org.jetbrains.sbt.CreateTasks;preferScala2;*/*:dumpStructure
+1665168766012:sbt run GameBootstrap
+1665168769665:sbt run
+1665168771569:sbt
+1665168791561:test
+1665168822794:run
+1665168864315:run akka-websockets
+1665168916460:run
+1665169110403:ru
+1665169111504:run

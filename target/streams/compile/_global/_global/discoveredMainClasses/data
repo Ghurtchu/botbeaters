@@ -1,0 +1,1 @@
+["com.onairentertainment.GameBootstrap","com.onairentertainment.client.GameWebsocketClient","com.onairentertainment.client.PingPongWebsocketClient","com.onairentertainment.delivery.akka.AkkaConsoleApp","com.onairentertainment.delivery.akka.AkkaHttpApp","com.onairentertainment.delivery.console.ScalaConsoleApp"]
