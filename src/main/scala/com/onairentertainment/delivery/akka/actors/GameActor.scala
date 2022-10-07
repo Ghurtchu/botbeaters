@@ -20,16 +20,16 @@ class GameActor extends Actor with ActorLogging {
       val botPlayerName = "bot"
       val botPlayer = Player(id = botPlayerName)
       val botPlayerActorRef = context.actorOf(PlayerActor.props(new BoundedRandomNumberGenerator(from = 0, to = 999999)), botPlayerName)
-      val players = botPlayer :: (for (_ <- 1 to nOfPlayers) yield Player()).toList
+      val players = (for (_ <- 1 to nOfPlayers) yield Player()).toList
       val playerActorRefs = botPlayerActorRef :: (for (player <- players) yield context.actorOf(PlayerActor.props(new BoundedRandomNumberGenerator(from = 0, to = 999999)), s"player${player.id}")).toList
+      context.become(withState(nOfPlayers + 1, playersWithRandomNumbers))
       originalSender ! Initialized(playerActorRefs)
-      playerActorRefs.zip(players).foreach { pair =>
+      playerActorRefs.zip(botPlayer :: players).foreach { pair =>
         val playerActorRef = pair._1
         val player = pair._2
 
         playerActorRef ! Play(player)
       }
-      context.become(withState(nOfPlayers + 1, playersWithRandomNumbers))
 
     case PlayerReply(player) =>
       if (isLastPlayer(numberOfPlayers)) {

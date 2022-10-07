@@ -18,16 +18,16 @@ class GameActorTestSpec extends TestKit(ActorSystem("GameResultAggregatorActorTe
   override protected def afterAll(): Unit = sys.terminate()
 
   "A GameActor" should {
-    "should receive InitializePlayers message, and initialize a specified child PlayerActor references" in {
+    "receive InitializePlayers message, and initialize a specified child PlayerActor references along with bot reference" in {
       val gameActor = sys.actorOf(Props[GameActor])
-      gameActor ! InitializePlayers(2) // create 2 players, send them Play messages
+      gameActor ! InitializePlayers(2) // create 2 players, one bot and send them Play messages
       val msg = expectMsgType[Initialized]
-      assertResult(2)(msg.playerActorRefs.length)
+      assertResult(3)(msg.playerActorRefs.length)
     }
 
-    "should receive AggregatorReply and respond with Aggregated to the sender" in {
+    "receive AggregatorReply and respond with Aggregated to the sender" in {
       val gameActor = sys.actorOf(Props[GameActor])
-      gameActor ! AggregatorReply(Seq(AggregatedResult(1, "player1", 12345, 5), AggregatedResult(2, "player2", 11111, 10000)))
+      gameActor ! AggregatorReply(AggregatedResult(1, "player1", 12345, 5) :: AggregatedResult(2, "player2", 11111, 10000) :: Nil)
       val msg = expectMsgType[Aggregated]
       val expected = List(AggregatedResult(1, "player1", 12345, 5), AggregatedResult(2, "player2", 11111, 10000))
       assertResult(expected)(msg.results)

@@ -23,7 +23,7 @@ class GameResultAggregatorActorTestSpec extends TestKit(ActorSystem("GameResultA
 
     "aggregate initial results and respond with AggregatorReply(sortedResults)" in {
       val gameResultAggregatorActor = sys.actorOf(GameResultAggregatorActor.props(new OnAirResultAggregator(new OnAirResultCalculator())))
-      val players = Player("player_1", Some(RandomNumber(111))) :: Player("player_2", Some(RandomNumber(123))) :: Player("player_3", Some(RandomNumber(223))) :: Nil
+      val players = Player("bot", Some(RandomNumber(12345))) :: Player("player_1", Some(RandomNumber(11111))) :: Player("player_2", Some(RandomNumber(11234))) :: Player("player_3", Some(RandomNumber(22223))) :: Nil
       gameResultAggregatorActor ! AggregateResults(players)
       val reply = expectMsgType[AggregatorReply]
       assert(reply.results.head.player == "player_1")

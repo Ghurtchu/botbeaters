@@ -1,7 +1,6 @@
 package com.onairentertainment.delivery.akka
 
 import akka.actor.{ActorSystem, Props}
-import akka.pattern.ask
 import akka.util.Timeout
 import com.onairentertainment.delivery.akka.actors.GameActor
 import com.onairentertainment.delivery.akka.actors.GameActor.InitializePlayers
