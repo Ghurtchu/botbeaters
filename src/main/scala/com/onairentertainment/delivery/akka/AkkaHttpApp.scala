@@ -44,9 +44,10 @@ object AkkaHttpApp extends scala.App
 
               (gameActor ? InitializeGame(playerCount))
                 .mapTo[GameResult]
-                .map(aggregated => TextMessage(aggregated.results.toJson.prettyPrint) )
+                .map(_.results)
+                .map(toTextMessage)
             }
-            case _ => Future.successful(TextMessage("Hello from Future!"))
+            case _ => helloFromFuture
           }
         }
       }
@@ -61,13 +62,17 @@ object AkkaHttpApp extends scala.App
 
                 (pingPongActor ? ping)
                   .mapTo[Pong]
-                  .map(pong => TextMessage(pong.toJson.prettyPrint))
+                  .map(toTextMessage)
               }
-              case _ => Future.successful(TextMessage("Hello from Future!"))
+              case _ => helloFromFuture
             }
           }
         }
       }
+
+  private def helloFromFuture = Future.successful(TextMessage("Hello from Future!"))
+
+  private def toTextMessage[A: JsonWriter](a: A): TextMessage = TextMessage(a.toJson.prettyPrint)
 
   Http().newServerAt("localhost", 8080).bind(routes)
   println("HTTP Server listening on port 8080")

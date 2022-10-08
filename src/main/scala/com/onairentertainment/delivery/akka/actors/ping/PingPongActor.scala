@@ -2,7 +2,7 @@ package com.onairentertainment.delivery.akka.actors.ping
 
 import akka.actor.{Actor, ActorLogging}
 
-class PingPongActor extends Actor with ActorLogging {
+final class PingPongActor extends Actor with ActorLogging {
 
   import PingPongActor._
 

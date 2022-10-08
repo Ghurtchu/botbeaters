@@ -4,7 +4,7 @@ import com.onairentertainment.core.model.{AggregatedResult, IntermediateResult, 
 import com.onairentertainment.core.service.protocol.{GameResultAggregator, GameResultCalculator}
 
 
-final class OnAirResultAggregator(gameResultCalculator: GameResultCalculator) extends GameResultAggregator {
+final class OnAirResultAggregator(private val gameResultCalculator: GameResultCalculator) extends GameResultAggregator {
 
   override def aggregate(players: List[Player]): List[AggregatedResult] = {
     val sortedAndFilteredPlayers = (for {

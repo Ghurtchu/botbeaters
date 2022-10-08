@@ -1,6 +1,6 @@
 package com.onairentertainment.core.model
 
-case class AggregatedResult(position: Int, player: String, number: Int, result: Int)
+final case class AggregatedResult(position: Int, player: String, number: Int, result: Int)
 
 object AggregatedResult {
   def apply(position: Int, intermediateResult: IntermediateResult): AggregatedResult =

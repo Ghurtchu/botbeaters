@@ -4,7 +4,7 @@ import OnAirResultCalculator.{EMPTY_STRING, NUM_RANGE}
 import com.onairentertainment.core.model.{GameResult, Player}
 import com.onairentertainment.core.service.protocol.GameResultCalculator
 
-class OnAirResultCalculator extends GameResultCalculator {
+final class OnAirResultCalculator extends GameResultCalculator {
 
   override def calculate(player: Player): GameResult = {
     val randomNumberAsString = player.randomNumber.get.value.toString

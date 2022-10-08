@@ -4,7 +4,7 @@ import akka.actor.{Actor, ActorLogging, Props}
 import com.onairentertainment.core.model.Player
 import com.onairentertainment.core.service.protocol.RandomNumberGenerator
 
-class RandomNumberGeneratorActor(randomNumberGenerator: RandomNumberGenerator) extends Actor with ActorLogging {
+final class RandomNumberGeneratorActor(randomNumberGenerator: RandomNumberGenerator) extends Actor with ActorLogging {
 
   import RandomNumberGeneratorActor._
 

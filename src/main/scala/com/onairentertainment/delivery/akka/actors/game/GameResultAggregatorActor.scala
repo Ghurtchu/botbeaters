@@ -5,7 +5,7 @@ import com.onairentertainment.core.model.{AggregatedResult, Player}
 import com.onairentertainment.core.service.protocol.GameResultAggregator
 import com.onairentertainment.delivery.akka.actors.game.GameResultAggregatorActor.{AggregateResults, GameAggregatorReply}
 
-class GameResultAggregatorActor(gameResultAggregator: GameResultAggregator) extends Actor with ActorLogging {
+final class GameResultAggregatorActor(gameResultAggregator: GameResultAggregator) extends Actor with ActorLogging {
 
   override def receive: Receive = {
     case AggregateResults(players) =>

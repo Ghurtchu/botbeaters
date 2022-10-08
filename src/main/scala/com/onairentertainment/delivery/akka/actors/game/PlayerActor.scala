@@ -7,7 +7,7 @@ import com.onairentertainment.core.service.protocol.RandomNumberGenerator
 import com.onairentertainment.delivery.akka.actors.game.PlayerActor.{Play, PlayerReply}
 import com.onairentertainment.delivery.akka.actors.game.RandomNumberGeneratorActor.{GenerateRandomNumber, UpdatePlayer}
 
-class PlayerActor (randomNumberGenerator: RandomNumberGenerator) extends Actor with ActorLogging {
+final class PlayerActor (randomNumberGenerator: RandomNumberGenerator) extends Actor with ActorLogging {
 
   override def receive: Receive = withState(null)
 
