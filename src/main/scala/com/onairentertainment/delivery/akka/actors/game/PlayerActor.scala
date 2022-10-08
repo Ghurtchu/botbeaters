@@ -5,7 +5,7 @@ import com.onairentertainment.core.model.Player
 import com.onairentertainment.core.service.implementation.BoundedRandomNumberGenerator
 import com.onairentertainment.core.service.protocol.RandomNumberGenerator
 import com.onairentertainment.delivery.akka.actors.game.PlayerActor.{Play, PlayerReply}
-import com.onairentertainment.delivery.akka.actors.game.RandomNumberGeneratorActor.{GenerateRandomNumber, UpdatePlayer}
+import com.onairentertainment.delivery.akka.actors.game.RandomNumberGeneratorActor.{GenerateRandomNumber, PlayerUpdated}
 
 final class PlayerActor (randomNumberGenerator: RandomNumberGenerator) extends Actor with ActorLogging {
 
@@ -17,7 +17,7 @@ final class PlayerActor (randomNumberGenerator: RandomNumberGenerator) extends A
       val numberGeneratorActor = context.actorOf(Props(new RandomNumberGeneratorActor(new BoundedRandomNumberGenerator(from = 0, to = 999_999))))
       numberGeneratorActor ! GenerateRandomNumber(player)
     }
-    case UpdatePlayer(player) => originalSender ! PlayerReply(player)
+    case PlayerUpdated(player) => originalSender ! PlayerReply(player)
   }
 }
 

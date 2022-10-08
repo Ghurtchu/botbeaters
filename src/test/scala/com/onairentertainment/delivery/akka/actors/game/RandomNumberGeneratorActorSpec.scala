@@ -4,7 +4,7 @@ import akka.actor.ActorSystem
 import akka.testkit.{ImplicitSender, TestKit}
 import com.onairentertainment.core.model.Player
 import com.onairentertainment.core.service.implementation.BoundedRandomNumberGenerator
-import com.onairentertainment.delivery.akka.actors.game.RandomNumberGeneratorActor.{GenerateRandomNumber, UpdatePlayer}
+import com.onairentertainment.delivery.akka.actors.game.RandomNumberGeneratorActor.{GenerateRandomNumber, PlayerUpdated}
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.wordspec.AnyWordSpecLike
 
@@ -23,7 +23,7 @@ class RandomNumberGeneratorActorSpec extends TestKit(ActorSystem("PlayerActorTes
       val actor = sys.actorOf(RandomNumberGeneratorActor.props(new BoundedRandomNumberGenerator(from = 0, to = 999_999)))
       val player = Player(id = "bot")
       actor ! GenerateRandomNumber(player)
-      val expected = expectMsgType[UpdatePlayer]
+      val expected = expectMsgType[PlayerUpdated]
       assert(expected.player.randomNumber.isDefined)
     }
     "not handle any other messages than GenerateRandomNumber(player)" in {

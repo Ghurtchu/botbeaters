@@ -12,7 +12,7 @@ final class RandomNumberGeneratorActor(randomNumberGenerator: RandomNumberGenera
     case GenerateRandomNumber(player) =>
       log.info(s"Generating random number for ${player.id}")
       val randomNumber = randomNumberGenerator.generate
-      sender() ! UpdatePlayer(player.copy(randomNumber = Some(randomNumber)))
+      sender() ! PlayerUpdated(player.copy(randomNumber = Some(randomNumber)))
   }
 }
 
@@ -22,5 +22,5 @@ object RandomNumberGeneratorActor {
     Props(new RandomNumberGeneratorActor(randomNumberGenerator))
 
   final case class GenerateRandomNumber(player: Player)
-  final case class UpdatePlayer(player: Player)
+  final case class PlayerUpdated(player: Player)
 }
