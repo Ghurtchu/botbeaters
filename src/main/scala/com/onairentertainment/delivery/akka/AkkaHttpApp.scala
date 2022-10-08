@@ -9,8 +9,8 @@ import akka.http.scaladsl.server.Directives._
 import akka.pattern.ask
 import akka.stream.scaladsl.Flow
 import akka.util.Timeout
-import com.onairentertainment.delivery.akka.actors.WebsocketGameActor
-import com.onairentertainment.delivery.akka.actors.GameActor.Aggregated
+import com.onairentertainment.delivery.akka.actors.{GameActor, WebsocketGameActor}
+import com.onairentertainment.delivery.akka.actors.GameActor.{Aggregated, InitializePlayers}
 import com.onairentertainment.delivery.akka.actors.WebsocketGameActor.PlayGame
 import com.onairentertainment.delivery.akka.model.{Ping, PlayPayload, Pong}
 import com.onairentertainment.delivery.akka.model.json.{AggregatedResultProtocol, PingJsonProtocol, PlayPayloadJsonProtocol, PongJsonProtocol}
@@ -38,11 +38,10 @@ object AkkaHttpApp extends scala.App
           Flow[Message].mapAsync(5) {
             case TextMessage.Strict(msg) => {
               val playerCount = msg.parseJson.convertTo[PlayPayload].players
-              val gameActor = system.actorOf(Props[WebsocketGameActor])
-
-              (gameActor ? PlayGame(playerCount))
+              val gameActor = system.actorOf(Props[GameActor])
+              (gameActor ? InitializePlayers(playerCount))
                 .mapTo[Aggregated]
-                .map(aggregated => TextMessage(aggregated.results.toJson.prettyPrint))
+                .map(aggregated => TextMessage(aggregated.results.toJson.prettyPrint) )
             }
             case _ => Future.successful(TextMessage("Unimplemented :)"))
           }

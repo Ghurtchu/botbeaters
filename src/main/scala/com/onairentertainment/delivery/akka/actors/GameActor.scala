@@ -9,11 +9,9 @@ import com.onairentertainment.delivery.akka.actors.PlayerActor.{Play, PlayerRepl
 
 class GameActor extends Actor with ActorLogging {
 
-  private final lazy val originalSender = sender()
+  override def receive: Receive = withState(0, List.empty, null)
 
-  override def receive: Receive = withState(0, List.empty)
-
-  private final def withState(numberOfPlayers: Int, playersWithRandomNumbers: List[Player]): Receive = {
+  private final def withState(numberOfPlayers: Int, playersWithRandomNumbers: List[Player], originalSender: ActorRef): Receive = {
 
     case InitializePlayers(nOfPlayers) =>
       log.info(s"Initializing the game for $nOfPlayers players")
@@ -22,8 +20,7 @@ class GameActor extends Actor with ActorLogging {
       val botPlayerActorRef = context.actorOf(PlayerActor.props(new BoundedRandomNumberGenerator(from = 0, to = 999999)), botPlayerName)
       val players = (for (_ <- 1 to nOfPlayers) yield Player()).toList
       val playerActorRefs = botPlayerActorRef :: (for (player <- players) yield context.actorOf(PlayerActor.props(new BoundedRandomNumberGenerator(from = 0, to = 999999)), s"player${player.id}")).toList
-      context.become(withState(nOfPlayers + 1, playersWithRandomNumbers))
-      originalSender ! Initialized(playerActorRefs)
+      context.become(withState(nOfPlayers + 1, playersWithRandomNumbers, sender()))
       playerActorRefs.zip(botPlayer :: players).foreach { pair =>
         val playerActorRef = pair._1
         val player = pair._2
@@ -35,12 +32,9 @@ class GameActor extends Actor with ActorLogging {
       if (isLastPlayer(numberOfPlayers)) {
         val gameResultAggregatorActorRef = context.actorOf(GameResultAggregatorActor.props(new OnAirResultAggregator(new OnAirResultCalculator())))
         gameResultAggregatorActorRef ! AggregateResults(player :: playersWithRandomNumbers)
-      } else context.become(withState(numberOfPlayers - 1, player :: playersWithRandomNumbers))
+      } else context.become(withState(numberOfPlayers - 1, player :: playersWithRandomNumbers, originalSender))
 
-    case AggregatorReply(results) =>
-      originalSender ! Aggregated(results)
-      log.info(results.mkString(start = "\n", sep = "\n", end = ""))
-
+    case AggregatorReply(results) => originalSender ! Aggregated(results)
   }
 
   private final def isLastPlayer(numberOfPlayers: Int): Boolean = numberOfPlayers == 1

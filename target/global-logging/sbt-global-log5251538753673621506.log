@@ -1,0 +1,53 @@
+[0m[[0m[0mdebug[0m] [0m[0m> Exec(test, Some(06285619-f7fe-4873-a4b7-5ac2d98aff4a), Some(CommandSource(console0)))[0m
+[0m[[0m[0mdebug[0m] [0m[0mEvaluating tasks: Test / test[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning task... Cancel: Signal, check cycles: false, forcegc: true[0m
+[0m[[0m[0minfo[0m] [0m[0mcompiling 5 Scala sources to /home/anzor.gurchumelia/Desktop/onair-game-simulation/target/scala-2.13/classes ...[0m
+[0m[[0m[33mwarn[0m] [0m[0m2 deprecations (since 2.13.3); re-run with -deprecation for details[0m
+[0m[[0m[33mwarn[0m] [0m[0mone warning found[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mBasicMultiRandomNumbersGeneratorTest:[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mOnAirResultAggregatorTest:[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mAn OnAirResultAggregator[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should aggregate results based on players' score and return them sorted in ascending order by the accumulated score[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should should only return the bot result because it's the highest[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should should return the list in the following order: player2 -> player3 -> bot, excluding player 1[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mA BasicMultiRandomNumbersGenerator[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should generate random numbers for all players which are passed in[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should generate correct random numbers for all players which are passed in[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mOnAirResultCalculatorTest:[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mAn OnAirResultCalculator[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should Calculate 10_000 if the player's random number is `11111` or `22222` or `33333` ... `99999`[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should Calculate `5` if the player's random number is `12345`[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should Calculate `12` if the player's random number has two identical and two different numbers: like `1189` or `2289` or `4489`[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mGameLogicSpec:[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mGameLogic[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mBoundedRandomNumberGeneratorTest:[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mA BoundedRandomNumberGenerator[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should generate either 0 or 1 if the bounds are equal to [0, 1)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should throw InvalidBoundException if the bounds are equal to [1, 1)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should generate a number between 5 and 14 (inclusive) if the bounds are equal to [5, 15)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mWebSocketSpec:[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mWebSocket[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mGameActorTestSpec:[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mA GameActor[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should receive InitializePlayers message, and initialize a specified child PlayerActor references along with bot reference[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should receive AggregatorReply and respond with Aggregated to the sender[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mWebsocketGameActorTest:[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mA WebsocketGameActor[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should receive PlayGame(n) message and respond with Aggregated result with sorted values in it[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mGameResultAggregatorActorTestSpec:[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mA GameResultAggregatorActor[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should aggregate initial results and respond with AggregatorReply(sortedResults)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should only respond with AggregatorReply[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should not handle any other messages than AggregateResults[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mPlayerActorTestSpec:[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mA PlayerActor[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should accept Play message and return PlayerReply to the sender[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should accept Play message and return PlayerReply with the Player's updated random number[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should not handle any other messages than Play[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[36mRun completed in 3 seconds, 727 milliseconds.[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[36mTotal number of tests run: 20[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[36mSuites: completed 10, aborted 0[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[36mTests: succeeded 20, failed 0, canceled 0, ignored 0, pending 0[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mAll tests passed.[0m[0m
+[0m[[0m[32msuccess[0m] [0m[0mTotal time: 9 s, completed Oct 8, 2022, 1:29:04 PM[0m
+[0m[[0m[0mdebug[0m] [0m[0m> Exec(shell, None, None)[0m

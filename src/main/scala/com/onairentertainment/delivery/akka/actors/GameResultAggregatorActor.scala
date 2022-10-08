@@ -8,7 +8,7 @@ import com.onairentertainment.delivery.akka.actors.GameResultAggregatorActor.{Ag
 class GameResultAggregatorActor(gameResultAggregator: GameResultAggregator) extends Actor with ActorLogging {
   override def receive: Receive = {
     case AggregateResults(players) =>
-      log.info("Aggregating results for players")
+      log.info(s"Aggregating results for all")
       val gameResult = gameResultAggregator.aggregate(players)
       sender ! AggregatorReply(gameResult)
   }
