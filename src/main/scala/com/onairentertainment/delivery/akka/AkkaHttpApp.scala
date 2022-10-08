@@ -44,8 +44,7 @@ object AkkaHttpApp extends scala.App
 
               (gameActor ? InitializeGame(playerCount))
                 .mapTo[GameResult]
-                .map(_.results)
-                .map(_.toJson)
+                .map(_.results.toMessage)
             }
             case _ => helloFromFuture
           }
@@ -62,7 +61,7 @@ object AkkaHttpApp extends scala.App
 
                 (pingPongActor ? ping)
                   .mapTo[Pong]
-                  .map(_.toJson)
+                  .map(_.toMessage)
               }
               case _ => helloFromFuture
             }
@@ -70,9 +69,9 @@ object AkkaHttpApp extends scala.App
         }
       }
 
-  private implicit def jsValueToTextMessage(jsValue: JsValue): Message = jsonToTextMessage(jsValue.prettyPrint)
-
-  private def jsonToTextMessage(json: String): Message = TextMessage(json)
+  implicit class MessageOps[A: JsonWriter](entity: A) {
+      def toMessage: Message = TextMessage(entity.toJson.prettyPrint)
+  }
 
   private def helloFromFuture = Future.successful(TextMessage("Hello from Future!"))
 
