@@ -9,10 +9,11 @@ import akka.http.scaladsl.server.Directives._
 import akka.pattern.ask
 import akka.stream.scaladsl.Flow
 import akka.util.Timeout
-import com.onairentertainment.delivery.akka.actors.{GameActor, WebsocketGameActor}
-import com.onairentertainment.delivery.akka.actors.GameActor.{Aggregated, InitializePlayers}
-import com.onairentertainment.delivery.akka.actors.WebsocketGameActor.PlayGame
-import com.onairentertainment.delivery.akka.model.{Ping, PlayPayload, Pong}
+import com.onairentertainment.delivery.akka.actors.game.GameActor
+import com.onairentertainment.delivery.akka.actors.game.GameActor.{GameResult, InitializeGame}
+import com.onairentertainment.delivery.akka.actors.ping.PingPongActor
+import com.onairentertainment.delivery.akka.actors.ping.PingPongActor.{Ping, Pong}
+import com.onairentertainment.delivery.akka.model.PlayPayload
 import com.onairentertainment.delivery.akka.model.json.{AggregatedResultProtocol, PingJsonProtocol, PlayPayloadJsonProtocol, PongJsonProtocol}
 import spray.json._
 
@@ -31,34 +32,38 @@ object AkkaHttpApp extends scala.App
   implicit val timeout: Timeout             = Timeout(3.seconds)
   implicit val ec: ExecutionContextExecutor = system.dispatcher
 
+  // let it be async
   val routes =
-    path("play") { // let it be async
+    path("play") {
       get {
         handleWebSocketMessages {
           Flow[Message].mapAsync(5) {
             case TextMessage.Strict(msg) => {
               val playerCount = msg.parseJson.convertTo[PlayPayload].players
               val gameActor = system.actorOf(Props[GameActor])
-              (gameActor ? InitializePlayers(playerCount))
-                .mapTo[Aggregated]
+
+              (gameActor ? InitializeGame(playerCount))
+                .mapTo[GameResult]
                 .map(aggregated => TextMessage(aggregated.results.toJson.prettyPrint) )
             }
-            case _ => Future.successful(TextMessage("Unimplemented :)"))
+            case _ => Future.successful(TextMessage("Hello from Future!"))
           }
         }
       }
     } ~
       path("ping") {
-        get { // let it be sync
+        get {
           handleWebSocketMessages {
-            Flow[Message].collect {
+            Flow[Message].mapAsync(5) {
               case TextMessage.Strict(body) => {
                 val ping = body.parseJson.convertTo[Ping]
-                val pong = Pong(ping.id, "response.pong", ping.timestamp, System.currentTimeMillis())
+                val pingPongActor = system.actorOf(Props[PingPongActor])
 
-                TextMessage(pong.toJson.prettyPrint)
+                (pingPongActor ? ping)
+                  .mapTo[Pong]
+                  .map(pong => TextMessage(pong.toJson.prettyPrint))
               }
-              case _ => TextMessage("Unhandled")
+              case _ => Future.successful(TextMessage("Hello from Future!"))
             }
           }
         }

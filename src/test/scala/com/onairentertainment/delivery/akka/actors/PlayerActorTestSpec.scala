@@ -4,7 +4,8 @@ import akka.actor.ActorSystem
 import akka.testkit.{ImplicitSender, TestKit}
 import com.onairentertainment.core.model.Player
 import com.onairentertainment.core.service.implementation.BoundedRandomNumberGenerator
-import com.onairentertainment.delivery.akka.actors.PlayerActor.{Play, PlayerReply}
+import com.onairentertainment.delivery.akka.actors.game.PlayerActor
+import com.onairentertainment.delivery.akka.actors.game.PlayerActor.{Play, PlayerReply}
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.wordspec.AnyWordSpecLike
 

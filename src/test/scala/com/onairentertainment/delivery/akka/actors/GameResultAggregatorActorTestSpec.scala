@@ -4,7 +4,8 @@ import akka.actor.ActorSystem
 import akka.testkit.{ImplicitSender, TestKit}
 import com.onairentertainment.core.model.{Player, RandomNumber}
 import com.onairentertainment.core.service.implementation.{OnAirResultAggregator, OnAirResultCalculator}
-import com.onairentertainment.delivery.akka.actors.GameResultAggregatorActor.{AggregateResults, AggregatorReply}
+import com.onairentertainment.delivery.akka.actors.game.GameResultAggregatorActor
+import com.onairentertainment.delivery.akka.actors.game.GameResultAggregatorActor.{AggregateResults, GameAggregatorReply}
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.wordspec.AnyWordSpecLike
 
@@ -25,7 +26,7 @@ class GameResultAggregatorActorTestSpec extends TestKit(ActorSystem("GameResultA
       val gameResultAggregatorActor = sys.actorOf(GameResultAggregatorActor.props(new OnAirResultAggregator(new OnAirResultCalculator())))
       val players = Player("bot", Some(RandomNumber(12345))) :: Player("player_1", Some(RandomNumber(11111))) :: Player("player_2", Some(RandomNumber(11234))) :: Player("player_3", Some(RandomNumber(22223))) :: Nil
       gameResultAggregatorActor ! AggregateResults(players)
-      val reply = expectMsgType[AggregatorReply]
+      val reply = expectMsgType[GameAggregatorReply]
       assert(reply.results.head.player == "player_1")
       assert(reply.results.tail.head.player == "player_3")
       assert(reply.results.tail.tail.head.player == "player_2")
@@ -34,7 +35,7 @@ class GameResultAggregatorActorTestSpec extends TestKit(ActorSystem("GameResultA
     "only respond with AggregatorReply" in {
       val gameResultAggregatorActor = sys.actorOf(GameResultAggregatorActor.props(new OnAirResultAggregator(new OnAirResultCalculator())))
       gameResultAggregatorActor ! AggregateResults(Nil)
-      expectMsgType[AggregatorReply]
+      expectMsgType[GameAggregatorReply]
     }
 
     "not handle any other messages than AggregateResults" in {

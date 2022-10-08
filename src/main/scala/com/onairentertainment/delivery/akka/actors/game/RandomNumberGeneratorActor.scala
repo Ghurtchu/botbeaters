@@ -1,0 +1,22 @@
+package com.onairentertainment.delivery.akka.actors.game
+
+import akka.actor.{Actor, ActorLogging}
+import com.onairentertainment.core.model.Player
+import com.onairentertainment.core.service.protocol.RandomNumberGenerator
+
+class RandomNumberGeneratorActor(randomNumberGenerator: RandomNumberGenerator) extends Actor with ActorLogging {
+
+  import RandomNumberGeneratorActor._
+
+  override def receive: Receive = {
+    case GenerateRandomNumber(player) =>
+      log.info(s"Generating random number for ${player.id}")
+      val randomNumber = randomNumberGenerator.generate
+      sender() ! UpdatePlayer(player.copy(randomNumber = Some(randomNumber)))
+  }
+}
+
+object RandomNumberGeneratorActor {
+  final case class GenerateRandomNumber(player: Player)
+  final case class UpdatePlayer(player: Player)
+}

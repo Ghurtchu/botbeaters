@@ -3,8 +3,8 @@ package com.onairentertainment.delivery.akka
 import akka.actor.{ActorSystem, Props}
 import akka.pattern.ask
 import akka.util.Timeout
-import com.onairentertainment.delivery.akka.actors.GameActor
-import com.onairentertainment.delivery.akka.actors.GameActor.{Aggregated, InitializePlayers}
+import com.onairentertainment.delivery.akka.actors.game.GameActor.{GameResult, InitializeGame}
+import com.onairentertainment.delivery.akka.actors.game.GameActor
 
 import scala.concurrent.duration.DurationInt
 import scala.util.{Failure, Success}
@@ -18,13 +18,15 @@ object AkkaConsoleApp extends scala.App {
 
   while (true) {
     val gameActor = system.actorOf(Props[GameActor])
-    println("Welcome to the game!")
-    (gameActor ? InitializePlayers(5)).mapTo[Aggregated].onComplete {
-      case Success(value) => println(value.results.mkString(start = "\n", sep = "\n", end = ""))
+    println("-" * 44 + "GAME STARTED" + "-" * 44)
+    (gameActor ? InitializeGame(5)).mapTo[GameResult].onComplete {
+      case Success(value) =>
+        println("-" * 46 + "RESULTS" + "-" * 46)
+        println(value.results.mkString(sep = "\n"))
+        println("-" * 99)
       case Failure(exception) => println(s"Failed due to $exception")
     }
     Thread sleep 3000 // play every three seconds
-    println(s"<${"~" * 50}>")
   }
 
 }

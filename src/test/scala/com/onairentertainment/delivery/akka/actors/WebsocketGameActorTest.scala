@@ -2,7 +2,7 @@ package com.onairentertainment.delivery.akka.actors
 
 import akka.actor.{ActorSystem, Props}
 import akka.testkit.{ImplicitSender, TestKit}
-import com.onairentertainment.delivery.akka.actors.GameActor.Aggregated
+import com.onairentertainment.delivery.akka.actors.game.GameActor.GameResult
 import com.onairentertainment.delivery.akka.actors.WebsocketGameActor.PlayGame
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.wordspec.AnyWordSpecLike
@@ -18,7 +18,7 @@ class WebsocketGameActorTest extends TestKit(ActorSystem("PlayerActorTestSpec"))
     "receive PlayGame(n) message and respond with Aggregated result with sorted values in it" in {
       val websocketGameActor = system.actorOf(Props[WebsocketGameActor])
       websocketGameActor ! PlayGame(5)
-      val msg = expectMsgType[Aggregated]
+      val msg = expectMsgType[GameResult]
       assertResult(msg.results.sortWith(_.result > _.result))(msg.results)
     }
   }
