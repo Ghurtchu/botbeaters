@@ -1,6 +1,6 @@
 package com.onairentertainment.delivery.akka.actors.game
 
-import akka.actor.{Actor, ActorLogging}
+import akka.actor.{Actor, ActorLogging, Props}
 import com.onairentertainment.core.model.Player
 import com.onairentertainment.core.service.protocol.RandomNumberGenerator
 
@@ -17,6 +17,10 @@ class RandomNumberGeneratorActor(randomNumberGenerator: RandomNumberGenerator) e
 }
 
 object RandomNumberGeneratorActor {
+
+  def props(randomNumberGenerator: RandomNumberGenerator): Props =
+    Props(new RandomNumberGeneratorActor(randomNumberGenerator))
+
   final case class GenerateRandomNumber(player: Player)
   final case class UpdatePlayer(player: Player)
 }

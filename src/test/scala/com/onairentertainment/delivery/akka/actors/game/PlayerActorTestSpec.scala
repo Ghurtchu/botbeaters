@@ -1,10 +1,9 @@
-package com.onairentertainment.delivery.akka.actors
+package com.onairentertainment.delivery.akka.actors.game
 
 import akka.actor.ActorSystem
 import akka.testkit.{ImplicitSender, TestKit}
 import com.onairentertainment.core.model.Player
 import com.onairentertainment.core.service.implementation.BoundedRandomNumberGenerator
-import com.onairentertainment.delivery.akka.actors.game.PlayerActor
 import com.onairentertainment.delivery.akka.actors.game.PlayerActor.{Play, PlayerReply}
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.wordspec.AnyWordSpecLike
@@ -21,14 +20,12 @@ class PlayerActorTestSpec extends TestKit(ActorSystem("PlayerActorTestSpec"))
   override protected def afterAll(): Unit = sys.terminate()
 
   "A PlayerActor" should {
-
     "accept Play message and return PlayerReply to the sender" in {
       val playerActor = sys.actorOf(PlayerActor.props(new BoundedRandomNumberGenerator(from = 0, to = 10_000)))
       val player = Player()
       playerActor ! Play(player)
       expectMsgType[PlayerReply]
     }
-
     "accept Play message and return PlayerReply with the Player's updated random number" in {
       val playerActor = sys.actorOf(PlayerActor.props(new BoundedRandomNumberGenerator(from = 0, to = 10_000)))
       val player = Player()
@@ -36,7 +33,6 @@ class PlayerActorTestSpec extends TestKit(ActorSystem("PlayerActorTestSpec"))
       val reply = expectMsgType[PlayerReply]
       assert(reply.player.randomNumber.isDefined)
     }
-
     "not handle any other messages than Play" in {
       val playerActor = sys.actorOf(PlayerActor.props(new BoundedRandomNumberGenerator(from = 0, to = 10_000)))
       playerActor ! 5
@@ -45,9 +41,5 @@ class PlayerActorTestSpec extends TestKit(ActorSystem("PlayerActorTestSpec"))
       playerActor ! "Akka rocks!"
       expectNoMessage(3.seconds)
     }
-
   }
-
-
-
 }
