@@ -12,6 +12,6 @@ final class PingPongActor extends Actor with ActorLogging {
 }
 
 object PingPongActor {
-  case class Pong(requestId: Int, messageType: String, requestAt: Long, timestamp: Long)
-  case class Ping(id: Int, messageType: String, timestamp: Long)
+  final case class Pong(requestId: Int, messageType: String, requestAt: Long, timestamp: Long)
+  final case class Ping(id: Int, messageType: String, timestamp: Long)
 }

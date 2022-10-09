@@ -38,13 +38,14 @@ object AkkaHttpApp extends scala.App
       get {
         handleWebSocketMessages {
           Flow[Message].mapAsync(5) {
-            case TextMessage.Strict(msg) => {
-              val playerCount = msg.parseJson.convertTo[PlayPayload].players
+            case TextMessage.Strict(body) => {
+              val playerCount = body.parseJson.convertTo[PlayPayload].players
               val gameActor = system.actorOf(Props[GameActor])
-
-              (gameActor ? InitializeGame(playerCount))
+              val futureGameResultMsg = (gameActor ? InitializeGame(playerCount))
                 .mapTo[GameResult]
-                .map(_.results.toMessage)
+                .map(_.results.toMsg)
+
+              futureGameResultMsg
             }
             case _ => helloFromFuture
           }
@@ -58,10 +59,11 @@ object AkkaHttpApp extends scala.App
               case TextMessage.Strict(body) => {
                 val ping = body.parseJson.convertTo[Ping]
                 val pingPongActor = system.actorOf(Props[PingPongActor])
-
-                (pingPongActor ? ping)
+                val futurePongMsg = (pingPongActor ? ping)
                   .mapTo[Pong]
-                  .map(_.toMessage)
+                  .map(_.toMsg)
+
+                futurePongMsg
               }
               case _ => helloFromFuture
             }
@@ -69,8 +71,8 @@ object AkkaHttpApp extends scala.App
         }
       }
 
-  implicit class MessageOps[A: JsonWriter](entity: A) {
-      def toMessage: Message = TextMessage(entity.toJson.prettyPrint)
+  private final implicit class EntityToMessageConverter[A: JsonWriter](entity: A) {
+      def toMsg: Message = TextMessage(entity.toJson.prettyPrint)
   }
 
   private def helloFromFuture = Future.successful(TextMessage("Hello from Future!"))

@@ -14,7 +14,7 @@ final class PlayerActor (randomNumberGenerator: RandomNumberGenerator) extends A
   private final def withState(originalSender: ActorRef): Receive = {
     case Play(player) => {
       context.become(withState(sender()))
-      val numberGeneratorActor = context.actorOf(Props(new RandomNumberGeneratorActor(new BoundedRandomNumberGenerator(from = 0, to = 999_999))))
+      val numberGeneratorActor = context.actorOf(RandomNumberGeneratorActor.props(new BoundedRandomNumberGenerator(from = 0, to = 999_999)))
       numberGeneratorActor ! GenerateRandomNumber(player)
     }
     case PlayerUpdated(player) => originalSender ! PlayerReply(player)

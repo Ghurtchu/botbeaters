@@ -52,7 +52,7 @@ final class GameActor extends Actor with ActorLogging {
     (for (_ <- 1 to amount) yield Player()).toList
 
   private def spawnPlayerActorRefs(players: List[Player]): List[ActorRef] =
-    (for (player <- players) yield context.actorOf(PlayerActor.props(new BoundedRandomNumberGenerator(from = 0, to = 999999)), s"player${player.id}"))
+    for (player <- players) yield context.actorOf(PlayerActor.props(new BoundedRandomNumberGenerator(from = 0, to = 999999)), s"player${player.id}")
 
 }
 

@@ -27,7 +27,7 @@ object PingPongWebsocketClient extends scala.App with PingJsonProtocol {
     case TextMessage.Strict(msg) =>
       println("-" * 25 concat ("-" * 25))
       println(msg)
-    case _                       => println("We don't care")
+    case _ => println("We don't care")
   }
 
   val flow: Flow[Message, Message, Future[Done]] = Flow.fromSinkAndSourceMat(printSink, playPayloadSource)(Keep.left)

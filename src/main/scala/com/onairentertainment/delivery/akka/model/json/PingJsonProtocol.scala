@@ -4,5 +4,5 @@ import com.onairentertainment.delivery.akka.actors.ping.PingPongActor.Ping
 import spray.json.DefaultJsonProtocol
 
 trait PingJsonProtocol extends DefaultJsonProtocol {
-  implicit val pingFormat = jsonFormat3(Ping)
+  final implicit val pingFormat = jsonFormat3(Ping)
 }

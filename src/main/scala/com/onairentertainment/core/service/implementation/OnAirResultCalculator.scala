@@ -7,7 +7,7 @@ import com.onairentertainment.core.service.protocol.GameResultCalculator
 final class OnAirResultCalculator extends GameResultCalculator {
 
   override def calculate(player: Player): GameResult = {
-    val randomNumberAsString = player.randomNumber.get.value.toString
+    val randomNumberAsString = player.randomNumber.fold("0")(_.value.toString)
     val playerScore = calculatePlayerScore(randomNumberAsString)
 
     GameResult(playerScore)
