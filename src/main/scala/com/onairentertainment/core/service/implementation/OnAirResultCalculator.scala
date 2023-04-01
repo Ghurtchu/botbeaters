@@ -20,11 +20,11 @@ final class OnAirResultCalculator extends GameResultCalculator {
     } yield number.toInt -> count)
       .toMap
       .filter(_._2 != 0)
-      .map(applyFormula)
+      .map { case (_, score) =>  applyFormula(score) }
       .sum
   }
 
-  private def applyFormula(pair: (Int, Int)): Int = Math.pow(10, pair._2 - 1).toInt
+  private def applyFormula(score: Int): Int = Math.pow(10, score - 1).toInt
 
 }
 
