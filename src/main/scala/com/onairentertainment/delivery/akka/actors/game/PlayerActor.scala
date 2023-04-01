@@ -9,7 +9,7 @@ import com.onairentertainment.delivery.akka.actors.game.RandomNumberGeneratorAct
 
 final class PlayerActor (randomNumberGenerator: RandomNumberGenerator) extends Actor with ActorLogging {
 
-  override def receive: Receive = withState(null)
+  override def receive: Receive = withState(ActorRef.noSender)
 
   private final def withState(originalSender: ActorRef): Receive = {
     case Play(player) => {

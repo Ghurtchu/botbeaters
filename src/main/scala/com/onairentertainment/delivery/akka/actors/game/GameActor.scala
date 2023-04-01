@@ -9,7 +9,7 @@ import com.onairentertainment.delivery.akka.actors.game.PlayerActor.{Play, Playe
 
 final class GameActor extends Actor with ActorLogging {
 
-  override def receive: Receive = withState(0, Nil, null)
+  override def receive: Receive = withState(0, Nil, ActorRef.noSender)
 
   private def withState(numberOfPlayers: Int, playersWithRandomNumbers: List[Player], originalSender: ActorRef): Receive = {
 
