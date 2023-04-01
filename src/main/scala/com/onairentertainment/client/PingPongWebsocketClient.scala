@@ -6,7 +6,7 @@ import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.ws.{Message, TextMessage, WebSocketRequest}
 import akka.stream.scaladsl.{Flow, Keep, Sink, Source}
 import com.onairentertainment.delivery.akka.actors.ping.PingPongActor.Ping
-import com.onairentertainment.delivery.akka.model.json.{PingJsonProtocol, PongJsonProtocol}
+import com.onairentertainment.delivery.akka.model.json.PingJsonProtocol
 import spray.json._
 
 import scala.concurrent.Future
@@ -33,5 +33,7 @@ object PingPongWebsocketClient extends scala.App with PingJsonProtocol {
   val flow: Flow[Message, Message, Future[Done]] = Flow.fromSinkAndSourceMat(printSink, playPayloadSource)(Keep.left)
 
   Http().singleWebSocketRequest(WebSocketRequest("ws://localhost:8080/ping"), flow)
+
+  println("initialized WebSocketClient successfully")
 
 }
