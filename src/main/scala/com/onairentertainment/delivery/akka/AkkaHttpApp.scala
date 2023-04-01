@@ -9,12 +9,11 @@ import akka.http.scaladsl.server.Directives._
 import akka.pattern.ask
 import akka.stream.scaladsl.Flow
 import akka.util.Timeout
+import com.onairentertainment.core.serialisers.{AggregatedResultProtocol, PingJsonProtocol, PlayPayloadJsonProtocol, PongJsonProtocol}
 import com.onairentertainment.delivery.akka.actors.game.GameActor
 import com.onairentertainment.delivery.akka.actors.game.GameActor.{GameResult, InitializeGame}
 import com.onairentertainment.delivery.akka.actors.ping.PingPongActor
 import com.onairentertainment.delivery.akka.actors.ping.PingPongActor.{Ping, Pong}
-import com.onairentertainment.delivery.akka.model.PlayPayload
-import com.onairentertainment.delivery.akka.model.json.{AggregatedResultProtocol, PingJsonProtocol, PlayPayloadJsonProtocol, PongJsonProtocol}
 import spray.json._
 
 import scala.concurrent.{ExecutionContextExecutor, Future}
@@ -78,6 +77,6 @@ object AkkaHttpApp extends scala.App
   private def helloFromFuture = Future.successful(TextMessage("Hello from Future!"))
 
   Http().newServerAt("localhost", 8080).bind(routes)
-  println("HTTP Server listening on port 8080")
 
+  println("HTTP Server listening on port 8080")
 }

@@ -5,8 +5,8 @@ import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.ws.{Message, TextMessage, WebSocketRequest}
 import akka.stream.scaladsl.{Flow, Keep, Sink, Source}
+import com.onairentertainment.core.serialisers.PingJsonProtocol
 import com.onairentertainment.delivery.akka.actors.ping.PingPongActor.Ping
-import com.onairentertainment.delivery.akka.model.json.PingJsonProtocol
 import spray.json._
 
 import scala.concurrent.Future

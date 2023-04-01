@@ -13,7 +13,7 @@ object AkkaConsoleApp extends scala.App {
 
   val system = ActorSystem("AkkaGameSystem")
 
-  implicit val timeout = Timeout(2.seconds)
+  implicit val timeout: Timeout = Timeout(2.seconds)
   import system.dispatcher
 
   while (true) {

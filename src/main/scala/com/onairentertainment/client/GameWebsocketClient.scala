@@ -6,8 +6,8 @@ import akka.http.scaladsl.Http
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
 import akka.http.scaladsl.model.ws.{BinaryMessage, Message, TextMessage, WebSocketRequest}
 import akka.stream.scaladsl.{Flow, Keep, Sink, Source}
-import com.onairentertainment.delivery.akka.model.PlayPayload
-import com.onairentertainment.delivery.akka.model.json.{AggregatedResultProtocol, PlayPayloadJsonProtocol}
+import com.onairentertainment.core.domain.PlayPayload
+import com.onairentertainment.core.serialisers.{AggregatedResultProtocol, PlayPayloadJsonProtocol}
 import spray.json._
 
 import scala.concurrent.Future

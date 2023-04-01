@@ -29,4 +29,6 @@ object domain {
 
   final case class RandomNumber(value: Int) extends AnyVal
 
+  final case class PlayPayload(messageType: String, players: Int)
+
 }
