@@ -9,15 +9,15 @@ import com.onairentertainment.delivery.akka.actors.game.RandomNumberGeneratorAct
 
 final class PlayerActor (randomNumberGenerator: RandomNumberGenerator) extends Actor with ActorLogging {
 
-  override def receive: Receive = withState(ActorRef.noSender)
+  override def receive: Receive = withState(None)
 
-  private final def withState(originalSender: ActorRef): Receive = {
+  private def withState(originalSender: Option[ActorRef]): Receive = {
     case Play(player) => {
-      context.become(withState(sender()))
+      context.become(withState(Some(sender())))
       val numberGeneratorActor = context.actorOf(RandomNumberGeneratorActor.props(new BoundedRandomNumberGenerator(from = 0, to = 999_999)))
       numberGeneratorActor ! GenerateRandomNumber(player)
     }
-    case PlayerUpdated(player) => originalSender ! PlayerReply(player)
+    case PlayerUpdated(player) => originalSender.foreach(_ ! PlayerReply(player))
   }
 }
 

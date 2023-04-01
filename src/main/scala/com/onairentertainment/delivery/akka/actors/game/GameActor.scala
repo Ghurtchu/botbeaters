@@ -9,9 +9,9 @@ import com.onairentertainment.delivery.akka.actors.game.PlayerActor.{Play, Playe
 
 final class GameActor extends Actor with ActorLogging {
 
-  override def receive: Receive = withState(0, Nil, ActorRef.noSender)
+  override def receive: Receive = withState(0, Nil, None)
 
-  private def withState(numberOfPlayers: Int, playersWithRandomNumbers: List[Player], originalSender: ActorRef): Receive = {
+  private def withState(numberOfPlayers: Int, playersWithRandomNumbers: List[Player], originalSender: Option[ActorRef]): Receive = {
 
     case InitializeGame(nOfPlayers) =>
       log.info(s"Initializing the game for $nOfPlayers players")
@@ -19,14 +19,8 @@ final class GameActor extends Actor with ActorLogging {
       val botPlayerActorRef = spawnBotPlayerActor(botPlayer.id)
       val players = spawnPlayers(nOfPlayers)
       val playerActorRefs = botPlayerActorRef :: spawnPlayerActorRefs(players)
-      context.become(withState(nOfPlayers + 1, playersWithRandomNumbers, sender()))
-      playerActorRefs.zip(botPlayer :: players).foreach { pair =>
-        val playerActorRef = pair._1
-        val player = pair._2
-
-        playerActorRef ! Play(player)
-      }
-
+      context.become(withState(nOfPlayers + 1, playersWithRandomNumbers, Some(sender())))
+      playerActorRefs.zip(botPlayer :: players).foreach { case (playerActorRef, player) => playerActorRef ! Play(player) }
 
     case PlayerReply(player) =>
       if (isLastPlayer(numberOfPlayers)) {
@@ -35,7 +29,7 @@ final class GameActor extends Actor with ActorLogging {
       } else context.become(withState(numberOfPlayers - 1, player :: playersWithRandomNumbers, originalSender))
 
 
-    case GameAggregatorReply(results) => originalSender ! GameResult(results)
+    case GameAggregatorReply(results) => originalSender.foreach(_ ! GameResult(results))
 
   }
 

@@ -17,12 +17,8 @@ object domain {
 
   object Player {
 
-    import scala.util.Random
-
-    private final lazy val RANDOM = new Random()
-
     def apply(): Player =
-      new Player(s"player_${RANDOM.between(0, Int.MaxValue)}", None)
+      new Player(s"player_${java.util.UUID.randomUUID().toString}", None)
 
     def apply(id: String): Player = new Player(id, None)
   }
