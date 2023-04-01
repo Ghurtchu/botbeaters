@@ -1,7 +1,7 @@
 package com.onairentertainment.delivery.akka.actors.game
 
 import akka.actor.{Actor, ActorLogging, ActorRef}
-import com.onairentertainment.core.model.{AggregatedResult, Player}
+import com.onairentertainment.core.domain.{AggregatedResult, Player}
 import com.onairentertainment.core.service.implementation.{BoundedRandomNumberGenerator, OnAirResultAggregator, OnAirResultCalculator}
 import com.onairentertainment.delivery.akka.actors.game.GameActor._
 import com.onairentertainment.delivery.akka.actors.game.GameResultAggregatorActor._

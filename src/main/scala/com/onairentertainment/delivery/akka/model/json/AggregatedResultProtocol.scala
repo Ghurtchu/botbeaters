@@ -1,6 +1,6 @@
 package com.onairentertainment.delivery.akka.model.json
 
-import com.onairentertainment.core.model.AggregatedResult
+import com.onairentertainment.core.domain.AggregatedResult
 import spray.json.DefaultJsonProtocol
 
 trait AggregatedResultProtocol extends DefaultJsonProtocol {

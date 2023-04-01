@@ -1,7 +1,7 @@
 package com.onairentertainment.delivery.akka.actors.game
 
 import akka.actor._
-import com.onairentertainment.core.model.{AggregatedResult, Player}
+import com.onairentertainment.core.domain.{AggregatedResult, Player}
 import com.onairentertainment.core.service.protocol.GameResultAggregator
 import com.onairentertainment.delivery.akka.actors.game.GameResultAggregatorActor.{AggregateResults, GameAggregatorReply}
 

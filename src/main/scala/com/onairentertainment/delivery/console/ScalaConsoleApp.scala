@@ -1,6 +1,6 @@
 package com.onairentertainment.delivery.console
 
-import com.onairentertainment.core.model.{AggregatedResult, Player}
+import com.onairentertainment.core.domain.{AggregatedResult, Player}
 import com.onairentertainment.core.service.implementation.{BasicMultiRandomNumbersGenerator, BoundedRandomNumberGenerator, OnAirResultAggregator, OnAirResultCalculator}
 import com.onairentertainment.core.service.protocol.GameResultAggregator
 

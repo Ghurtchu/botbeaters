@@ -1,7 +1,7 @@
 package com.onairentertainment.delivery.akka.actors.game
 
 import akka.actor.{Actor, ActorLogging, ActorRef, Props}
-import com.onairentertainment.core.model.Player
+import com.onairentertainment.core.domain.Player
 import com.onairentertainment.core.service.implementation.BoundedRandomNumberGenerator
 import com.onairentertainment.core.service.protocol.RandomNumberGenerator
 import com.onairentertainment.delivery.akka.actors.game.PlayerActor.{Play, PlayerReply}

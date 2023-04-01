@@ -1,7 +1,7 @@
 package com.onairentertainment.core.service.implementation
 
 import OnAirResultCalculator.{EMPTY_STRING, NUM_RANGE}
-import com.onairentertainment.core.model.{GameResult, Player}
+import com.onairentertainment.core.domain.{GameResult, Player}
 import com.onairentertainment.core.service.protocol.GameResultCalculator
 
 final class OnAirResultCalculator extends GameResultCalculator {

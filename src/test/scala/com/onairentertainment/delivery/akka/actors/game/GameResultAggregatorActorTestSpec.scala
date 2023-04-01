@@ -2,7 +2,7 @@ package com.onairentertainment.delivery.akka.actors.game
 
 import akka.actor.ActorSystem
 import akka.testkit.{ImplicitSender, TestKit}
-import com.onairentertainment.core.model.{Player, RandomNumber}
+import com.onairentertainment.core.domain.{Player, RandomNumber}
 import com.onairentertainment.core.service.implementation.{OnAirResultAggregator, OnAirResultCalculator}
 import com.onairentertainment.delivery.akka.actors.game.GameResultAggregatorActor.{AggregateResults, GameAggregatorReply}
 import org.scalatest.BeforeAndAfterAll

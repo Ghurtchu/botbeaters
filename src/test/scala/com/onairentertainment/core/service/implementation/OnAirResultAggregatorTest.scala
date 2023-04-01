@@ -1,6 +1,6 @@
 package com.onairentertainment.core.service.implementation
 
-import com.onairentertainment.core.model.{AggregatedResult, Player, RandomNumber}
+import com.onairentertainment.core.domain.{AggregatedResult, Player, RandomNumber}
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 

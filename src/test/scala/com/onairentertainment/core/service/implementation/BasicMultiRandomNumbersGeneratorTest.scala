@@ -1,6 +1,6 @@
 package com.onairentertainment.core.service.implementation
 
-import com.onairentertainment.core.model.Player
+import com.onairentertainment.core.domain.Player
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 
