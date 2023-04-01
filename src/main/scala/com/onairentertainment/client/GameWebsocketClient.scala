@@ -27,6 +27,7 @@ object GameWebsocketClient extends scala.App
       val players = scala.util.Random.nextInt(10)
       val playPayload = PlayPayload("request.play", players)
       val json = playPayload.toJson.prettyPrint
+
       TextMessage(json)
     }.delay(3.seconds)
 
