@@ -3,9 +3,9 @@ package com.onairentertainment.delivery.akka.actors.game
 import akka.actor.{Actor, ActorLogging, ActorRef}
 import com.onairentertainment.core.domain.{AggregatedResult, Player}
 import com.onairentertainment.core.service.implementation.{
-  BoundedRandomNumberGenerator,
-  OnAirResultAggregator,
-  OnAirResultCalculator
+  BoundedRNG,
+  OnAirAggregator,
+  OnAirCalculator
 }
 import com.onairentertainment.delivery.akka.actors.game.GameActor._
 import com.onairentertainment.delivery.akka.actors.game.GameAggregatorActor._
@@ -40,8 +40,8 @@ final class GameActor extends Actor with ActorLogging {
 
     case PlayerReply(player) => {
       if (isLastPlayer(playerCount)) {
-        val calculator = new OnAirResultCalculator
-        val aggregator = new OnAirResultAggregator(calculator)
+        val calculator = new OnAirCalculator
+        val aggregator = new OnAirAggregator(calculator)
         val gameAggregatorActor = context.actorOf(GameAggregatorActor.props(aggregator))
 
         gameAggregatorActor ! AggregateResults(player :: players)
@@ -78,7 +78,7 @@ final class GameActor extends Actor with ActorLogging {
     }
 
   private def rngService =
-    new BoundedRandomNumberGenerator(from = 0, to = 999999)
+    new BoundedRNG(from = 0, to = 999999)
 
 }
 

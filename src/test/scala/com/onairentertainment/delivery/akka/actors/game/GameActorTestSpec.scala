@@ -19,13 +19,14 @@ class GameActorTestSpec extends TestKit(ActorSystem("GameResultAggregatorActorTe
     "should receive InitializeGame and respond with GameResult to the sender" in {
       val gameActor = sys.actorOf(Props[GameActor])
       gameActor ! InitializeGame(5)
+
       expectMsgType[GameResult]
     }
     "should respond with sorted results" in {
       val gameActor = sys.actorOf(Props[GameActor])
       gameActor ! InitializeGame(5)
       val actual = expectMsgType[GameResult]
-      println(actual)
+
       assertResult(actual.results.sortWith(_.result > _.result))(actual.results)
     }
   }

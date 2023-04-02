@@ -75,7 +75,8 @@ object AkkaHttpApp extends scala.App
       def toMsg: Message = TextMessage(entity.toJson.prettyPrint)
   }
 
-  private def helloFromFuture = Future.successful(TextMessage("Hello from Future!"))
+  private def helloFromFuture = 
+    Future.successful(TextMessage("Hello from Future!"))
 
   Http().newServerAt("localhost", 8080).bind(routes)
 

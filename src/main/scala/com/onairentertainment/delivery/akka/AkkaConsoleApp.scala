@@ -19,7 +19,9 @@ object AkkaConsoleApp extends scala.App {
   while (true) {
     val gameActor = system.actorOf(Props[GameActor])
     println("-" * 44 + "GAME STARTED" + "-" * 44)
-    (gameActor ? InitializeGame(5)).mapTo[GameResult].onComplete {
+    (gameActor ? InitializeGame(5))
+      .mapTo[GameResult]
+      .onComplete {
       case Success(value) =>
         println("-" * 46 + "RESULTS" + "-" * 46)
         println(value.results.mkString(sep = "\n"))

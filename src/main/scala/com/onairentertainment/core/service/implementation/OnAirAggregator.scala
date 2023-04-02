@@ -1,12 +1,12 @@
 package com.onairentertainment.core.service.implementation
 
-import com.onairentertainment.core.domain.{AggregatedResult, IntermediateResult, Player, RandomNumber}
-import com.onairentertainment.core.service.protocol.{GameResultAggregator, GameResultCalculator}
+import com.onairentertainment.core.domain.{AggregatedResult, IntermediateResult, Player,}
+import com.onairentertainment.core.service.protocol.{GameAggregator, GameResultCalculator}
 
 
-final class OnAirResultAggregator(private val gameResultCalculator: GameResultCalculator) extends GameResultAggregator {
+final class OnAirAggregator(private val calc: GameResultCalculator) extends GameAggregator {
 
-  override def aggregate(players: List[Player]): List[AggregatedResult] = {
+  override def aggr(players: List[Player]): List[AggregatedResult] = {
     val sortedAndFilteredPlayers = (for {
       intermediateResults <- Option(players.map(toIntermediateResult))
       bot                 <- intermediateResults.find(_.player == "bot")
@@ -23,7 +23,7 @@ final class OnAirResultAggregator(private val gameResultCalculator: GameResultCa
   private def toIntermediateResult(player: Player): IntermediateResult = {
     val name = player.id
     val number = player.randomNumber.fold(0)(_.value)
-    val result = gameResultCalculator.calculate(player).value
+    val result = calc.calc(player).value
 
     IntermediateResult(name, number, result)
   }

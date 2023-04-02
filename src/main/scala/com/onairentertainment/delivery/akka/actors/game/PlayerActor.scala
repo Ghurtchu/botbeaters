@@ -2,12 +2,12 @@ package com.onairentertainment.delivery.akka.actors.game
 
 import akka.actor.{Actor, ActorLogging, ActorRef, Props}
 import com.onairentertainment.core.domain.Player
-import com.onairentertainment.core.service.implementation.BoundedRandomNumberGenerator
-import com.onairentertainment.core.service.protocol.RandomNumberGenerator
+import com.onairentertainment.core.service.implementation.BoundedRNG
+import com.onairentertainment.core.service.protocol.RNGService
 import com.onairentertainment.delivery.akka.actors.game.PlayerActor.{Play, PlayerReply}
 import com.onairentertainment.delivery.akka.actors.game.RNGActor.{GenerateRandomNumber, PlayerUpdated}
 
-final class PlayerActor (randomNumberGenerator: RandomNumberGenerator) extends Actor with ActorLogging {
+final class PlayerActor (randomNumberGenerator: RNGService) extends Actor with ActorLogging {
 
   override def receive: Receive = withState(None)
 
@@ -26,7 +26,7 @@ final class PlayerActor (randomNumberGenerator: RandomNumberGenerator) extends A
   }
 
   private def rngService =
-    new BoundedRandomNumberGenerator(from = 0, to = 999_999)
+    new BoundedRNG(from = 0, to = 999_999)
 }
 
 object PlayerActor {
@@ -34,7 +34,7 @@ object PlayerActor {
   final case class Play(player: Player)
   final case class PlayerReply(player: Player)
 
-  def props(randomNumberGenerator: RandomNumberGenerator): Props =
+  def props(randomNumberGenerator: RNGService): Props =
     Props(new PlayerActor(randomNumberGenerator))
 
 }

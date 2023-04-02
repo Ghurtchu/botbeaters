@@ -1,21 +1,21 @@
 package com.onairentertainment.core.service.implementation
 
-import BoundedRandomNumberGenerator.{InvalidBoundException, underlyingImpl}
+import BoundedRNG.{InvalidBoundException, underlyingImpl}
 import com.onairentertainment.core.domain.RandomNumber
-import com.onairentertainment.core.service.protocol.RandomNumberGenerator
+import com.onairentertainment.core.service.protocol.RNGService
 
 import scala.util.Random
 
-final class BoundedRandomNumberGenerator(from: Int, to: Int) extends RandomNumberGenerator {
+final class BoundedRNG(from: Int, to: Int) extends RNGService {
 
-  override def generate: RandomNumber = {
+  override def gen: RandomNumber = {
     if (from >= to) throw new InvalidBoundException("Invalid bounds. `to` must be greater than `from`")
 
     RandomNumber(underlyingImpl.between(from, to))
   }
 }
 
-object BoundedRandomNumberGenerator {
+object BoundedRNG {
   protected final val underlyingImpl = new Random
   class InvalidBoundException(override val getMessage: String) extends RuntimeException
 }

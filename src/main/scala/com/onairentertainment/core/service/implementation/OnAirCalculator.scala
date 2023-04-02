@@ -1,12 +1,12 @@
 package com.onairentertainment.core.service.implementation
 
-import OnAirResultCalculator.{EMPTY_STRING, NUM_RANGE}
+import OnAirCalculator.{EMPTY_STRING, NUM_RANGE}
 import com.onairentertainment.core.domain.{GameResult, Player}
 import com.onairentertainment.core.service.protocol.GameResultCalculator
 
-final class OnAirResultCalculator extends GameResultCalculator {
+final class OnAirCalculator extends GameResultCalculator {
 
-  override def calculate(player: Player): GameResult = {
+  override def calc(player: Player): GameResult = {
     val randomNumberAsString = player.randomNumber.fold("0")(_.value.toString)
     val playerScore = calculatePlayerScore(randomNumberAsString)
 
@@ -28,7 +28,7 @@ final class OnAirResultCalculator extends GameResultCalculator {
 
 }
 
-object OnAirResultCalculator {
+object OnAirCalculator {
   private final lazy val EMPTY_STRING: String   = ""
   private final lazy val NUM_RANGE: Seq[String] = (0 to 9).map(_.toString)
 }

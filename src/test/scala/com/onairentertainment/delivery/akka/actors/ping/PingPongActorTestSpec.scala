@@ -18,17 +18,19 @@ class PingPongActorTestSpec extends TestKit(ActorSystem("PingPongActorTestSpec")
 
   "A PingPongActor" should {
     "receive Ping message and respond with Pong message" in {
-      val pingPongActor = sys.actorOf(Props[PingPongActor])
+      val actor = sys.actorOf(Props[PingPongActor])
       val now = System.currentTimeMillis()
-      pingPongActor ! Ping(100, "request.ping", now)
+      actor ! Ping(100, "request.ping", now)
       val expected = expectMsgType[Pong]
+
       assert(expected.timestamp >= now)
     }
     "not handle any other messages than Ping" in {
-      val pingPongActor = sys.actorOf(Props[PingPongActor])
-      pingPongActor ! mutable.HashSet
-      pingPongActor ! Left("right")
-      pingPongActor ! Right("left")
+      val actor = sys.actorOf(Props[PingPongActor])
+      actor ! mutable.HashSet
+      actor ! Left("right")
+      actor ! Right("left")
+
       expectNoMessage(3.seconds)
     }
   }
