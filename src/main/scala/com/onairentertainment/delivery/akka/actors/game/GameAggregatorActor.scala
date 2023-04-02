@@ -5,14 +5,14 @@ import com.onairentertainment.core.domain.{AggregatedResult, Player}
 import com.onairentertainment.core.service.protocol.GameAggregator
 import com.onairentertainment.delivery.akka.actors.game.GameAggregatorActor.{AggregateResults, GameAggregatorReply}
 
-final class GameAggregatorActor(gameResultAggregator: GameAggregator) extends Actor
+final class GameAggregatorActor(aggr: GameAggregator) extends Actor
   with ActorLogging {
 
   override def receive: Receive = {
 
     case AggregateResults(players) => {
       log.info(s"Aggregating results for all")
-      val gameResult = gameResultAggregator.aggr(players)
+      val gameResult = aggr.aggr(players)
 
       sender ! GameAggregatorReply(gameResult)
     }

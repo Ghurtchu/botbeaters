@@ -2,9 +2,9 @@ package com.onairentertainment.delivery.akka.actors.game
 
 import akka.actor.{Actor, ActorLogging, Props}
 import com.onairentertainment.core.domain.Player
-import com.onairentertainment.core.service.protocol.RNGService
+import com.onairentertainment.core.service.protocol.RNG
 
-final class RNGActor(randomNumberGenerator: RNGService) extends Actor with ActorLogging {
+final class RNGActor(rng: RNG) extends Actor with ActorLogging {
 
   import RNGActor._
 
@@ -12,8 +12,7 @@ final class RNGActor(randomNumberGenerator: RNGService) extends Actor with Actor
 
     case GenerateRandomNumber(player) => {
       log.info(s"Generating random number for ${player.id}")
-      val randomNumber = randomNumberGenerator.gen
-      val playerUpdated = player.copy(randomNumber = Some(randomNumber))
+      val playerUpdated = player.copy(randomNumber = Some(rng.gen))
 
       sender() ! PlayerUpdated(playerUpdated)
     }
@@ -23,7 +22,7 @@ final class RNGActor(randomNumberGenerator: RNGService) extends Actor with Actor
 
 object RNGActor {
 
-  def props(randomNumberGenerator: RNGService): Props =
+  def props(randomNumberGenerator: RNG): Props =
     Props(new RNGActor(randomNumberGenerator))
 
   final case class GenerateRandomNumber(player: Player)

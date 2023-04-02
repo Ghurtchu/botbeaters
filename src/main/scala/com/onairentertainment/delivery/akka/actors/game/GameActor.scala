@@ -17,15 +17,15 @@ final class GameActor extends Actor with ActorLogging {
 
   private def withState(playerCount: Int, players: List[Player], originalSender: Option[ActorRef]): Receive = {
 
-    case InitializeGame(nOfPlayers) => {
-      log.info(s"Initializing the game for $nOfPlayers players")
+    case InitializeGame(amount) => {
+      log.info(s"Initializing the game for $amount players")
       val bot = spawnBot
       val botActor = spawnBotActor(bot.id)
-      val players = spawnPlayers(nOfPlayers)
+      val players = spawnPlayers(amount)
       val playerActors = botActor :: spawnPlayerActors(players)
       context.become {
         withState(
-          playerCount = nOfPlayers + 1,
+          playerCount = amount + 1,
           players = players,
           originalSender = Some(sender())
         )
