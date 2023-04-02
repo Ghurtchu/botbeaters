@@ -22,7 +22,7 @@ Let's see the flow:
   - Server receives the JSON, parses it, initializes the `GameActor` and sends `InitializeGame` to it.
   - `GameActor` spawns N amount of `PlayerActor`-s and sends `Play` message to each.
   - each `PlayerActor` sends `GenerateRandomNumber` to `RandomNumberGeneratorActor`.
-  - `RandomNumberGenerator` generates the random number and replies back to `PlayerActor` with `PlayerUpdated` message.
+  - `RandomNumberGeneratorActor` generates the random number and replies back to `PlayerActor` with `PlayerUpdated` message.
   - `PlayerActor` then replies `GameActor` with `PlayerReply` message.
   - Once all messages received, `GameActor` creates `GameResultAggregatorActor` and sends `AggregateResults` message to it.
   - `GameResultAggregatorActor` applies the business logic to the game and responds back with `GameAggregatorReply`.
