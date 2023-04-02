@@ -60,18 +60,17 @@ final class GameActor extends Actor with ActorLogging {
       originalSender.foreach(_ ! GameResult(results))
   }
 
-  private def isLastPlayer(numberOfPlayers: Int): Boolean = numberOfPlayers == 1
+  private def isLastPlayer(numberOfPlayers: Int): Boolean =
+    numberOfPlayers == 1
 
-  private def spawnBot: Player = Player(id = "bot")
+  private def spawnBot: Player =
+    Player(id = "bot")
 
-  private def spawnBotActor(actorName: String): ActorRef = {
-    val rngService = new BoundedRandomNumberGenerator(from = 0, to = 99999)
-
+  private def spawnBotActor(actorName: String): ActorRef =
     context.actorOf(PlayerActor.props(rngService), actorName)
-  }
 
-
-  private def spawnPlayers(amount: Int): List[Player] = List.fill(amount)(Player())
+  private def spawnPlayers(amount: Int): List[Player] =
+    List.fill(amount)(Player())
 
   private def spawnPlayerActors(players: List[Player]): List[ActorRef] =
     players.map { player =>
