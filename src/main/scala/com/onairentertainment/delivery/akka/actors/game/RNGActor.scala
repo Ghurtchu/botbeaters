@@ -4,9 +4,9 @@ import akka.actor.{Actor, ActorLogging, Props}
 import com.onairentertainment.core.domain.Player
 import com.onairentertainment.core.service.protocol.RandomNumberGenerator
 
-final class RandomNumberGeneratorActor(randomNumberGenerator: RandomNumberGenerator) extends Actor with ActorLogging {
+final class RNGActor(randomNumberGenerator: RandomNumberGenerator) extends Actor with ActorLogging {
 
-  import RandomNumberGeneratorActor._
+  import RNGActor._
 
   override def receive: Receive = {
     case GenerateRandomNumber(player) =>
@@ -16,10 +16,10 @@ final class RandomNumberGeneratorActor(randomNumberGenerator: RandomNumberGenera
   }
 }
 
-object RandomNumberGeneratorActor {
+object RNGActor {
 
   def props(randomNumberGenerator: RandomNumberGenerator): Props =
-    Props(new RandomNumberGeneratorActor(randomNumberGenerator))
+    Props(new RNGActor(randomNumberGenerator))
 
   final case class GenerateRandomNumber(player: Player)
   final case class PlayerUpdated(player: Player)

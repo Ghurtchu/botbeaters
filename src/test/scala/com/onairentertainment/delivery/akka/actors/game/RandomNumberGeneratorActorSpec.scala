@@ -4,7 +4,7 @@ import akka.actor.ActorSystem
 import akka.testkit.{ImplicitSender, TestKit}
 import com.onairentertainment.core.domain.Player
 import com.onairentertainment.core.service.implementation.BoundedRandomNumberGenerator
-import com.onairentertainment.delivery.akka.actors.game.RandomNumberGeneratorActor.{GenerateRandomNumber, PlayerUpdated}
+import com.onairentertainment.delivery.akka.actors.game.RNGActor.{GenerateRandomNumber, PlayerUpdated}
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.wordspec.AnyWordSpecLike
 
@@ -20,14 +20,14 @@ class RandomNumberGeneratorActorSpec extends TestKit(ActorSystem("PlayerActorTes
 
   "A RandomNumberGeneratorActor" should {
     "receive GenerateRandomNumber(player) and respond with UpdatePlayer(player) with random number in it" in {
-      val actor = sys.actorOf(RandomNumberGeneratorActor.props(new BoundedRandomNumberGenerator(from = 0, to = 999_999)))
+      val actor = sys.actorOf(RNGActor.props(new BoundedRandomNumberGenerator(from = 0, to = 999_999)))
       val player = Player(id = "bot")
       actor ! GenerateRandomNumber(player)
       val expected = expectMsgType[PlayerUpdated]
       assert(expected.player.randomNumber.isDefined)
     }
     "not handle any other messages than GenerateRandomNumber(player)" in {
-      val actor = sys.actorOf(RandomNumberGeneratorActor.props(new BoundedRandomNumberGenerator(from = 0, to = 999_999)))
+      val actor = sys.actorOf(RNGActor.props(new BoundedRandomNumberGenerator(from = 0, to = 999_999)))
       actor ! 123
       actor ! "true"
       actor ! false
