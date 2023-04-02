@@ -38,7 +38,7 @@ final class GameActor extends Actor with ActorLogging {
       }
     }
 
-    case PlayerReply(player) =>
+    case PlayerReply(player) => {
       if (isLastPlayer(playerCount)) {
         val calculator = new OnAirResultCalculator
         val aggregator = new OnAirResultAggregator(calculator)
@@ -54,7 +54,7 @@ final class GameActor extends Actor with ActorLogging {
           )
         }
       }
-
+    }
 
     case GameAggregatorReply(results) =>
       originalSender.foreach(_ ! GameResult(results))
