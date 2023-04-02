@@ -9,11 +9,16 @@ final class RNGActor(randomNumberGenerator: RandomNumberGenerator) extends Actor
   import RNGActor._
 
   override def receive: Receive = {
-    case GenerateRandomNumber(player) =>
+
+    case GenerateRandomNumber(player) => {
       log.info(s"Generating random number for ${player.id}")
       val randomNumber = randomNumberGenerator.generate
-      sender() ! PlayerUpdated(player.copy(randomNumber = Some(randomNumber)))
+      val playerUpdated = player.copy(randomNumber = Some(randomNumber))
+
+      sender() ! PlayerUpdated(playerUpdated)
+    }
   }
+
 }
 
 object RNGActor {
