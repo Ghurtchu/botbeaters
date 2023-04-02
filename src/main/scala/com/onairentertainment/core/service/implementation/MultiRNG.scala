@@ -3,7 +3,7 @@ package com.onairentertainment.core.service.implementation
 import com.onairentertainment.core.domain.Player
 import com.onairentertainment.core.service.protocol.{MultiRNGService, RNGService}
 
-final class SimpleRNG(gen: RNGService)
+final class MultiRNG(gen: RNGService)
   extends MultiRNGService {
 
   override def gen(players: List[Player]): List[Player] =

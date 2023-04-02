@@ -8,14 +8,14 @@ class SimpleRNGTest extends AnyWordSpecLike with Matchers {
 
   "A BasicMultiRandomNumbersGenerator" should {
     "generate random numbers for all players which are passed in" in {
-      val service = new SimpleRNG(new BoundedRNG(from = 10, to = 100))
+      val service = new MultiRNG(new BoundedRNG(from = 10, to = 100))
       val players = (for (_ <- 1 to 100) yield Player()).toList
       val updatedPlayers = service.gen(players)
 
       assert(updatedPlayers.forall(_.randomNumber.isDefined))
     }
     "generate correct random numbers for all players which are passed in" in {
-      val service = new SimpleRNG(new BoundedRNG(from = 10, to = 100))
+      val service = new MultiRNG(new BoundedRNG(from = 10, to = 100))
       val players = (for (_ <- 1 to 100) yield Player()).toList
       val updatedPlayers = service.gen(players)
 

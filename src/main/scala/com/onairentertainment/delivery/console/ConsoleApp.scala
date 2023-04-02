@@ -1,10 +1,10 @@
 package com.onairentertainment.delivery.console
 
 import com.onairentertainment.core.domain.{AggregatedResult, Player}
-import com.onairentertainment.core.service.implementation.{SimpleRNG, BoundedRNG, OnAirAggregator, OnAirCalculator}
+import com.onairentertainment.core.service.implementation.{MultiRNG, BoundedRNG, OnAirAggregator, OnAirCalculator}
 import com.onairentertainment.core.service.protocol.GameAggregator
 
-object ScalaConsoleApp extends scala.App {
+object ConsoleApp extends scala.App {
 
   sealed trait GameState
 
@@ -16,10 +16,10 @@ object ScalaConsoleApp extends scala.App {
   println("Welcome to the game!")
 
   during(GameState.On) {
-    val botPlayer = Player(id = "bot")
-    val initialPlayers: List[Player] = botPlayer :: (for (_ <- 0 to 5) yield Player()).toList
-    val multiRandomNumbersGenerator = new SimpleRNG(new BoundedRNG(from = 0, to = 10_000))
-    val playersWithNumbers: List[Player] = multiRandomNumbersGenerator.gen(initialPlayers)
+    val bot = Player(id = "bot")
+    val players: List[Player] = bot :: (for (_ <- 0 to 5) yield Player()).toList
+    val multiRandomNumbersGenerator = new MultiRNG(new BoundedRNG(from = 0, to = 10_000))
+    val playersWithNumbers: List[Player] = multiRandomNumbersGenerator.gen(players)
     val gameAggregator: GameAggregator = new OnAirAggregator(new OnAirCalculator())
     val gameResult: Seq[AggregatedResult] = gameAggregator.aggr(playersWithNumbers)
 
