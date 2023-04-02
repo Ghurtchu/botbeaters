@@ -21,11 +21,11 @@ Let's see the flow:
 - The server uses Akka Actors for intercommunication which looks like this:
   - Server receives the JSON, parses it, initializes the `GameActor` and sends `InitializeGame` to it.
   - `GameActor` spawns N amount of `PlayerActor`-s and sends `Play` message to each.
-  - each `PlayerActor` sends `GenerateRandomNumber` to `RandomNumberGeneratorActor`.
-  - `RandomNumberGeneratorActor` generates the random number and replies back to `PlayerActor` with `PlayerUpdated` message.
+  - each `PlayerActor` sends `GenerateRandomNumber` to `RNGActor`.
+  - `RNGActor` generates the random number and replies back to `PlayerActor` with `PlayerUpdated` message.
   - `PlayerActor` then replies `GameActor` with `PlayerReply` message.
-  - Once all messages received, `GameActor` creates `GameResultAggregatorActor` and sends `AggregateResults` message to it.
-  - `GameResultAggregatorActor` applies the business logic to the game and responds back with `GameAggregatorReply`.
+  - Once all messages received, `GameActor` creates `GameAggregatorActor` and sends `AggregateResults` message to it.
+  - `GameAggregatorActor` applies the business logic to the game and responds back with `GameAggregatorReply`.
   - `GameActor` responds back with the `GameResult` message which holds the final outcome for the round.
   - And finally the result gets parsed and delivered as a WebSocket response.
 
