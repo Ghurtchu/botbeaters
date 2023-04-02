@@ -1,5 +1,6 @@
 The game idea is very simple:
 - The client sends a simple JSON via WebSocket to initialize the game
+  
   The JSON looks like this:
   ```json
     {
