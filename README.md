@@ -1,4 +1,13 @@
-The game idea is very simple:
+The game idea is based on RNG and is really simple:
+
+The client sends the message to the server where it specifies the amount of players for each round. The server uses Akka actors for intercommunication. The game engine is simple:
+- The engine generates a random number for each player and the bot
+- it then applies some business logic and calculates the result for each player
+- then drops all players who were outperformed by bot
+- and finally sorts the results in descending order.
+
+Let's see the flow:
+
 - The client sends a simple JSON via WebSocket to initialize the game
   
   The JSON looks like this:
