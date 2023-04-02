@@ -7,8 +7,13 @@ final class PingPongActor extends Actor with ActorLogging {
   import PingPongActor._
 
   override def receive: Receive = {
-    case Ping(id, msgType, timestamp) =>
-      sender() ! Pong(id, msgType.replace("ping", "pong"), timestamp, System.currentTimeMillis())
+
+    case Ping(id, msgType, timestamp) => {
+      val now = System.currentTimeMillis()
+      val pong = msgType.replace("ping", "pong")
+
+      sender() ! Pong(id, pong, timestamp, now)
+    }
   }
 }
 
