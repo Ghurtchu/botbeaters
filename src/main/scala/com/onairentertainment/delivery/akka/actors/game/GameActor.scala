@@ -15,7 +15,10 @@ final class GameActor extends Actor with ActorLogging {
 
   override def receive: Receive = withState(0, Nil, None)
 
-  private def withState(playerCount: Int, players: List[Player], originalSender: Option[ActorRef]): Receive = {
+  private def withState(
+    playerCount: Int,
+    players: List[Player],
+    originalSender: Option[ActorRef]): Receive = {
 
     case InitializeGame(amount) => {
       log.info(s"Initializing the game for $amount players")
