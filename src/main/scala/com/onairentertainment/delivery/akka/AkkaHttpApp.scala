@@ -41,11 +41,11 @@ object AkkaHttpApp extends scala.App
             case TextMessage.Strict(body) => {
               val playerCount = body.parseJson.convertTo[PlayPayload].players
               val gameActor = system.actorOf(Props[GameActor])
-              val futureGameResultMsg = (gameActor ? InitializeGame(playerCount))
+              val response = (gameActor ? InitializeGame(playerCount))
                 .mapTo[GameResult]
                 .map(_.results.toMsg)
 
-              futureGameResultMsg
+              response
             }
             case _ => helloFromFuture
           }
@@ -59,11 +59,11 @@ object AkkaHttpApp extends scala.App
               case TextMessage.Strict(body) => {
                 val ping = body.parseJson.convertTo[Ping]
                 val pingPongActor = system.actorOf(Props[PingPongActor])
-                val futurePongMsg = (pingPongActor ? ping)
+                val response = (pingPongActor ? ping)
                   .mapTo[Pong]
                   .map(_.toMsg)
 
-                futurePongMsg
+                response
               }
               case _ => helloFromFuture
             }
@@ -71,11 +71,11 @@ object AkkaHttpApp extends scala.App
         }
       }
 
-  private final implicit class EntityToMessageConverter[A: JsonWriter](entity: A) {
+  implicit class EntityToMessageConverter[A: JsonWriter](entity: A) {
       def toMsg: Message = TextMessage(entity.toJson.prettyPrint)
   }
 
-  private def helloFromFuture = 
+  private def helloFromFuture =
     Future.successful(TextMessage("Hello from Future!"))
 
   Http().newServerAt("localhost", 8080).bind(routes)

@@ -25,7 +25,7 @@ object GameBootstrap {
       .fold[Solution](Solution.Console)(Solution.apply) match {
       case Solution.AkkaWebSockets => AkkaHttpApp.main(args)
       case Solution.AkkaConsole    => AkkaConsoleApp.main(args)
-      case Solution.Console   => ConsoleApp.main(args)
+      case Solution.Console        => ConsoleApp.main(args)
     }
 
 }

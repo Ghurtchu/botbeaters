@@ -17,17 +17,19 @@ object ConsoleApp extends scala.App {
 
   during(GameState.On) {
     val bot = Player(id = "bot")
-    val players: List[Player] = bot :: (for (_ <- 0 to 5) yield Player()).toList
-    val multiRandomNumbersGenerator = new MultiRNG(new BoundedRNG(from = 0, to = 10_000))
-    val playersWithNumbers: List[Player] = multiRandomNumbersGenerator.gen(players)
-    val gameAggregator: GameAggregator = new OnAirAggregator(new OnAirCalculator())
-    val gameResult: Seq[AggregatedResult] = gameAggregator.aggr(playersWithNumbers)
+    val players = bot :: List.fill(5)(Player())
+    val rng = new MultiRNG(new BoundedRNG(from = 0, to = 10_000))
+    val playersUpdated = rng.gen(players)
+    val aggreg = new OnAirAggregator(new OnAirCalculator())
+    val res = aggreg.aggr(playersUpdated)
 
-    println(gameResult.mkString("\n"))
+    println(res.mkString("\n"))
     println(s"<${"~" * 50}>")
     Thread sleep 3000 // play every 3 secs
   }
 
-  def during(gameState: => GameState)(game: => Unit): Unit = while (gameState == GameState.On) game
+  def during(gameState: => GameState)(game: => Unit): Unit =
+    while (gameState == GameState.On)
+      game
 
 }

@@ -9,13 +9,13 @@ final class OnAirAggregator(private val calc: GameResultCalculator) extends Game
   override def aggr(players: List[Player]): List[AggregatedResult] = {
     val aggregated = (for {
       intermediate <- Option(players.map(toIntermediate))
-      bot          <- intermediate.find(_.player == "bot")
+      bot <- intermediate.find(_.player == "bot")
       // we could have used less stricter equality like ">=" here, depends on the requirements.
-      botBeaters    =  bot :: intermediate.filter(_.result > bot.result)
-      sorted        =  botBeaters
-          .sortWith(_.result > _.result)
-          .zipWithIndex
-          .map(toAggregatedResult)
+      botBeaters = bot :: intermediate.filter(_.result > bot.result)
+      sorted =  botBeaters
+        .sortWith(_.result > _.result)
+        .zipWithIndex
+        .map(toAggregatedResult)
     } yield sorted).getOrElse(Nil)
 
     aggregated
