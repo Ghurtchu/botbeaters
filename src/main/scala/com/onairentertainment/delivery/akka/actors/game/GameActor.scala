@@ -2,54 +2,86 @@ package com.onairentertainment.delivery.akka.actors.game
 
 import akka.actor.{Actor, ActorLogging, ActorRef}
 import com.onairentertainment.core.domain.{AggregatedResult, Player}
-import com.onairentertainment.core.service.implementation.{BoundedRandomNumberGenerator, OnAirResultAggregator, OnAirResultCalculator}
+import com.onairentertainment.core.service.implementation.{
+  BoundedRandomNumberGenerator,
+  OnAirResultAggregator,
+  OnAirResultCalculator
+}
 import com.onairentertainment.delivery.akka.actors.game.GameActor._
-import com.onairentertainment.delivery.akka.actors.game.GameResultAggregatorActor._
+import com.onairentertainment.delivery.akka.actors.game.GameAggregatorActor._
 import com.onairentertainment.delivery.akka.actors.game.PlayerActor.{Play, PlayerReply}
 
 final class GameActor extends Actor with ActorLogging {
 
   override def receive: Receive = withState(0, Nil, None)
 
-  private def withState(numberOfPlayers: Int, playersWithRandomNumbers: List[Player], originalSender: Option[ActorRef]): Receive = {
+  private def withState(playerCount: Int, players: List[Player], originalSender: Option[ActorRef]): Receive = {
 
-    case InitializeGame(nOfPlayers) =>
+    case InitializeGame(nOfPlayers) => {
       log.info(s"Initializing the game for $nOfPlayers players")
-      val botPlayer = spawnBotPlayer
-      val botPlayerActorRef = spawnBotPlayerActor(botPlayer.id)
+      val bot = spawnBot
+      val botActor = spawnBotActor(bot.id)
       val players = spawnPlayers(nOfPlayers)
-      val playerActorRefs = botPlayerActorRef :: spawnPlayerActorRefs(players)
-      context.become(withState(nOfPlayers + 1, playersWithRandomNumbers, Some(sender())))
-      playerActorRefs.zip(botPlayer :: players).foreach { case (playerActorRef, player) => playerActorRef ! Play(player) }
+      val playerActors = botActor :: spawnPlayerActors(players)
+      context.become {
+        withState(
+          playerCount = nOfPlayers + 1,
+          players = players,
+          originalSender = Some(sender())
+        )
+      }
+      val actorPlayerPairs = playerActors.zip(bot :: players)
+
+      actorPlayerPairs.foreach {
+        case (playerActor, player) =>
+          playerActor ! Play(player)
+      }
+    }
 
     case PlayerReply(player) =>
-      if (isLastPlayer(numberOfPlayers)) {
-        val gameResultAggregatorActorRef = context.actorOf(GameResultAggregatorActor.props(new OnAirResultAggregator(new OnAirResultCalculator())))
-        gameResultAggregatorActorRef ! AggregateResults(player :: playersWithRandomNumbers)
-      } else context.become(withState(numberOfPlayers - 1, player :: playersWithRandomNumbers, originalSender))
+      if (isLastPlayer(playerCount)) {
+        val calculator = new OnAirResultCalculator
+        val aggregator = new OnAirResultAggregator(calculator)
+        val gameAggregatorActor = context.actorOf(GameAggregatorActor.props(aggregator))
+
+        gameAggregatorActor ! AggregateResults(player :: players)
+      } else {
+        context.become {
+          withState(
+            playerCount = playerCount - 1,
+            players = player :: players,
+            originalSender = originalSender
+          )
+        }
+      }
 
 
-    case GameAggregatorReply(results) => originalSender.foreach(_ ! GameResult(results))
-
+    case GameAggregatorReply(results) =>
+      originalSender.foreach(_ ! GameResult(results))
   }
 
-  private def isLastPlayer(numberOfPlayers: Int): Boolean =
-    numberOfPlayers == 1
+  private def isLastPlayer(numberOfPlayers: Int): Boolean = numberOfPlayers == 1
 
-  private def spawnBotPlayer: Player =
-    Player(id = "bot")
+  private def spawnBot: Player = Player(id = "bot")
 
-  private def spawnBotPlayerActor(actorName: String): ActorRef =
-    context.actorOf(PlayerActor.props(new BoundedRandomNumberGenerator(from = 0, to = 999999)), actorName)
+  private def spawnBotActor(actorName: String): ActorRef = {
+    val rngService = new BoundedRandomNumberGenerator(from = 0, to = 99999)
 
-  private def spawnPlayers(amount: Int): List[Player] =
-    (for (_ <- 1 to amount) yield Player()).toList
+    context.actorOf(PlayerActor.props(rngService), actorName)
+  }
 
-  private def spawnPlayerActorRefs(players: List[Player]): List[ActorRef] =
-    for (player <- players) yield context.actorOf(PlayerActor.props(new BoundedRandomNumberGenerator(from = 0, to = 999999)), s"player${player.id}")
+
+  private def spawnPlayers(amount: Int): List[Player] = List.fill(amount)(Player())
+
+  private def spawnPlayerActors(players: List[Player]): List[ActorRef] =
+    players.map { player =>
+      context.actorOf(PlayerActor.props(rngService), s"player${player.id}")
+    }
+
+  private def rngService =
+    new BoundedRandomNumberGenerator(from = 0, to = 999999)
 
 }
-
 
 object GameActor {
   final case class InitializeGame(numberOfPlayers: Int)

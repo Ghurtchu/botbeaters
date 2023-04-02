@@ -3,9 +3,9 @@ package com.onairentertainment.delivery.akka.actors.game
 import akka.actor._
 import com.onairentertainment.core.domain.{AggregatedResult, Player}
 import com.onairentertainment.core.service.protocol.GameResultAggregator
-import com.onairentertainment.delivery.akka.actors.game.GameResultAggregatorActor.{AggregateResults, GameAggregatorReply}
+import com.onairentertainment.delivery.akka.actors.game.GameAggregatorActor.{AggregateResults, GameAggregatorReply}
 
-final class GameResultAggregatorActor(gameResultAggregator: GameResultAggregator) extends Actor with ActorLogging {
+final class GameAggregatorActor(gameResultAggregator: GameResultAggregator) extends Actor with ActorLogging {
 
   override def receive: Receive = {
     case AggregateResults(players) =>
@@ -16,12 +16,12 @@ final class GameResultAggregatorActor(gameResultAggregator: GameResultAggregator
 
 }
 
-object GameResultAggregatorActor {
+object GameAggregatorActor {
 
   final case class AggregateResults(players: List[Player])
   final case class GameAggregatorReply(results: List[AggregatedResult])
 
   def props(gameResultAggregator: GameResultAggregator): Props =
-    Props(new GameResultAggregatorActor(gameResultAggregator))
+    Props(new GameAggregatorActor(gameResultAggregator))
 
 }
