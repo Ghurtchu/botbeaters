@@ -25,7 +25,7 @@ object GameAggregatorActor {
   final case class AggregateResults(players: List[Player])
   final case class GameAggregatorReply(results: List[AggregatedResult])
 
-  def props(gameResultAggregator: GameAggregator): Props =
-    Props(new GameAggregatorActor(gameResultAggregator))
+  def props(aggr: GameAggregator): Props =
+    Props(new GameAggregatorActor(aggr))
 
 }

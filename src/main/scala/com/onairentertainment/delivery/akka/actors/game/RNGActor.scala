@@ -22,8 +22,8 @@ final class RNGActor(rng: RNG) extends Actor with ActorLogging {
 
 object RNGActor {
 
-  def props(randomNumberGenerator: RNG): Props =
-    Props(new RNGActor(randomNumberGenerator))
+  def props(rng: RNG): Props =
+    Props(new RNGActor(rng))
 
   final case class GenerateRandomNumber(player: Player)
   final case class PlayerUpdated(player: Player)

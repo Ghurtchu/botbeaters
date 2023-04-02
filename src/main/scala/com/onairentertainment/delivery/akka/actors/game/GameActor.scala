@@ -60,8 +60,8 @@ final class GameActor extends Actor with ActorLogging {
       originalSender.foreach(_ ! GameResult(results))
   }
 
-  private def isLastPlayer(numberOfPlayers: Int): Boolean =
-    numberOfPlayers == 1
+  private def isLastPlayer(amount: Int): Boolean =
+    amount == 1
 
   private def spawnBot: Player =
     Player(id = "bot")
