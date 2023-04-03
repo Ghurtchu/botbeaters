@@ -59,7 +59,7 @@ The typical response looks like:
   },
   {
     "number": 691235,
-    "player": "player_82d7f47f-84b1-48c0-a026-635d87020abe",
+    "player": "bot",
     "position": 5,
     "result": 6
   }
